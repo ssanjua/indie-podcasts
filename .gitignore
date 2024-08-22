@@ -15,6 +15,8 @@ frontend/dist-ssr
 
 /frontend/.env
 /backend/.env
+/frontend/cors.json
+/frontend/src/firebase.jsx
 
 # Editor directories and files
 .vscode/*
