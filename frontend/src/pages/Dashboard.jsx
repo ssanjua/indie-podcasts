@@ -138,8 +138,8 @@ const Dashboard = ({ setSignInOpen }) => {
     await getPopularPodcast()
     await getPodcastsByCategory("variedad", setComedy)
     await getPodcastsByCategory("noticias", setNews)
-    await getPodcastsByCategory("tecnologia", setSports)
-    await getPodcastsByCategory("deportes", setCrime)
+    await getPodcastsByCategory("deportes", setSports)
+    await getPodcastsByCategory("tecnologia", setCrime)
     setLoading(false);
   }, [currentUser, getUser, getPopularPodcast, getPodcastsByCategory])
 

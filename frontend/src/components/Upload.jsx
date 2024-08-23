@@ -14,7 +14,7 @@ import ImageSelector from "./ImageSelector"
 import { useDispatch } from "react-redux"
 import { openSnackbar } from "../redux/snackbarSlice"
 import { createPodcast } from '../api'
-import { Category } from '../utils/Data'
+import { Category } from '../utils/data'
 import UploadRoundedIcon from '@mui/icons-material/UploadRounded';
 
 
