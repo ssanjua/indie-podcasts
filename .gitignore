@@ -12,6 +12,7 @@ lerna-debug.log*
 frontend/dist
 frontend/dist-ssr
 *.local
+/backend/.vercel
 
 /frontend/.env
 /backend/.env
@@ -27,3 +28,4 @@ frontend/dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
