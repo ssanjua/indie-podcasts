@@ -25,7 +25,7 @@ const NavbarDiv = styled.div`
   background: ${({ theme }) => theme.bg}
   border-radius: 16px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-  background-color: ${({ theme }) => theme.bgMedium}
+  background-color: ${({ theme }) => theme.bgMedium};
   backdrop-filter: blur(5.7px);
   -webkit-backdrop-filter: blur(5.7px);
   @media (max-width: 768px) {
@@ -41,6 +41,7 @@ const ButtonDiv = styled.div`
   border: 1px solid ${({ theme }) => theme.text_secondary};
   width: 100%;
   max-width: 70px;
+  border-radius: 4px;
   padding: 8px 10px;
   text-align: center;
   display: flex;
@@ -50,7 +51,6 @@ const ButtonDiv = styled.div`
   box-shadow: 3px 3px 0px 0px ${({ theme }) => theme.text_secondary};
   &:hover{
     background-color: ${({ theme }) => theme.text_secondary + 50};
-    
   }
 `;
 
@@ -106,7 +106,7 @@ const SearchBar = styled.div`
     background-color: ${({ theme }) => theme.text_secondary + 50};
     color: ${({ theme }) => theme.text_primary};
   }
-`
+`;
 
 const Navbar = ({ menuOpen, setMenuOpen, setUploadOpen, darkMode, setDarkMode }) => {
 

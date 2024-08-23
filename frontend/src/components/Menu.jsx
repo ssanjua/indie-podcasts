@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux'
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded'
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded'
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded'
-import BackupRoundedIcon from '@mui/icons-material/BackupRounded'
+import UploadRoundedIcon from '@mui/icons-material/UploadRounded';
 import ExitToAppRoundedIcon from '@mui/icons-material/ExitToAppRounded'
 import CloseRounded from '@mui/icons-material/CloseRounded'
 import LogoIcon from '/podcastindex.svg'
@@ -20,8 +20,9 @@ const MenuContainer = styled.div`
   flex: 0.5;
   flex-direction: column;
   height: 100vh;
-  padding: 8px;
+  padding: 10px;
   display: flex;
+  gap: 6px;
   box-sizing: border-box;
   align-items: flex-start;
   background-color: ${({ theme }) => theme.bg};
@@ -37,19 +38,21 @@ const MenuContainer = styled.div`
 `;
 
 const Elements = styled.div`
-  padding: 4px 16px;
-  border-radius: 8px;
+  padding: 0px 16px;
+  border-radius: 4px;
   display: flex;
   flex-direction: row;
   box-sizing: border-box;
   justify-content: flex-start;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   cursor: pointer;
   color:  ${({ theme }) => theme.text_secondary};
   width: 100%;
   &:hover{
     background-color: ${({ theme }) => theme.text_secondary + 50};
+    // border: 1px solid ${({ theme }) => theme.text_secondary};
+    // box-shadow: 3px 3px 0px 0px ${({ theme }) => theme.text_secondary};
   }
 `;
 
@@ -94,8 +97,7 @@ const Image = styled.img`
   height: 40px;
 `;
 
-
-const Menu = ({ setMenuOpen, setUploadOpen }) => {
+const Menu = ({ setMenuOpen, setUploadOpen, setAddEpisodeOpen }) => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -163,8 +165,19 @@ const Menu = ({ setMenuOpen, setUploadOpen }) => {
           style={{ textDecoration: "none", color: "inherit", width: '100%' }}
         >
           <Elements>
-            <BackupRoundedIcon />
-            <NavText>Subir</NavText>
+            <UploadRoundedIcon />
+            <NavText>Podcast</NavText>
+          </Elements>
+        </Link>
+      )}
+      {currentUser && (
+        <Link
+          onClick={() => setAddEpisodeOpen(true)}
+          style={{ textDecoration: "none", color: "inherit", width: '100%' }}
+        >
+          <Elements>
+            <UploadRoundedIcon />
+            <NavText>Episodio</NavText>
           </Elements>
         </Link>
       )}
@@ -192,4 +205,5 @@ Menu.propTypes = {
   darkMode: PropTypes.bool.isRequired,
   setDarkMode: PropTypes.func.isRequired,
   setUploadOpen: PropTypes.func.isRequired,
+  setAddEpisodeOpen: PropTypes.func.isRequired,
 }

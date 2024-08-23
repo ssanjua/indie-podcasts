@@ -136,10 +136,10 @@ const Dashboard = ({ setSignInOpen }) => {
       await getUser()
     }
     await getPopularPodcast()
-    await getPodcastsByCategory("comedy", setComedy)
-    await getPodcastsByCategory("news", setNews)
-    await getPodcastsByCategory("sports", setSports)
-    await getPodcastsByCategory("crime", setCrime)
+    await getPodcastsByCategory("variedad", setComedy)
+    await getPodcastsByCategory("noticias", setNews)
+    await getPodcastsByCategory("tecnologia", setSports)
+    await getPodcastsByCategory("deportes", setCrime)
     setLoading(false);
   }, [currentUser, getUser, getPopularPodcast, getPodcastsByCategory])
 
@@ -155,20 +155,6 @@ const Dashboard = ({ setSignInOpen }) => {
         </Loader>
         :
         <>
-          {/* {currentUser && user?.podcasts?.length > 0 &&
-            <FilterContainer box={true}>
-              <Topic>Your Uploads
-                <Link to={`/profile`} style={{ textDecoration: "none" }}>
-                  <Span>más</Span>
-                </Link>
-              </Topic>
-              <Podcasts>
-                {user?.podcasts.slice(0, 10).map((podcast) => (
-                  <PodcastCard key={podcast} podcast={podcast} user={user} setSignInOpen={setSignInOpen} />
-                ))}
-              </Podcasts>
-            </FilterContainer>
-          } */}
           <FilterContainer>
             <Topic>🔥 Populares 
               <Link to={`/showpodcasts/mostpopular`} style={{ textDecoration: "none" }}>
@@ -176,55 +162,55 @@ const Dashboard = ({ setSignInOpen }) => {
               </Link>
             </Topic>
             <Podcasts>
-              {mostPopular.slice(0, 10).map((podcast) => (
+              {mostPopular.slice(0, 12).map((podcast) => (
                 <PodcastCard podcast={podcast} key={podcast} user={user} setSignInOpen={setSignInOpen} />
               ))}
             </Podcasts>
           </FilterContainer>
           <FilterContainer>
-            <Topic>🤣 Comedia
-              <Link to={`/showpodcasts/comedy`} style={{ textDecoration: "none" }}>
+            <Topic>🤣 Variedad
+              <Link to={`/showpodcasts/variedad`} style={{ textDecoration: "none" }}>
                 <Span>más</Span>
               </Link>
             </Topic>
             <Podcasts>
-              {comedy.slice(0, 10).map((podcast) => (
+              {comedy.slice(0, 4).map((podcast) => (
                 <PodcastCard podcast={podcast} key={podcast} user={user} setSignInOpen={setSignInOpen} />
               ))}
             </Podcasts>
           </FilterContainer>
           <FilterContainer>
-            <Link to={`/showpodcasts/news`} style={{ textDecoration: "none" }}>
+            <Link to={`/showpodcasts/noticias`} style={{ textDecoration: "none" }}>
               <Topic>📰 Noticias
                 <Span>más</Span>
               </Topic>
             </Link>
             <Podcasts>
-              {news.slice(0, 10).map((podcast) => (
+              {news.slice(0, 4).map((podcast) => (
                 <PodcastCard podcast={podcast} key={podcast} user={user} setSignInOpen={setSignInOpen} />
               ))}
             </Podcasts>
           </FilterContainer>
           <FilterContainer>
-            <Link to={`/showpodcasts/crime`} style={{ textDecoration: "none" }}>
+            <Link to={`/showpodcasts/tecnologia`} style={{ textDecoration: "none" }}>
               <Topic>🤖 Tecnología
                 <Span>más</Span>
               </Topic>
             </Link>
             <Podcasts>
-              {crime.slice(0, 10).map((podcast) => (
+              {crime.slice(0, 4).map((podcast) => (
                 <PodcastCard podcast={podcast} key={podcast} user={user} setSignInOpen={setSignInOpen} />
               ))}
             </Podcasts>
           </FilterContainer>
           <FilterContainer>
-            <Link to={`/showpodcasts/sports`} style={{ textDecoration: "none" }}>
+            <Link to={`/showpodcasts/deportes`} style={{ textDecoration: "none" }}>
               <Topic>⚽ Deportes
                 <Span>más</Span>
               </Topic>
             </Link>
             <Podcasts>
-              {sports.slice(0, 10).map((podcast) => (
+              {sports.slice(0, 4).map((podcast) => (
                 <PodcastCard podcast={podcast} key={podcast} user={user} setSignInOpen={setSignInOpen} />
               ))}
             </Podcasts>

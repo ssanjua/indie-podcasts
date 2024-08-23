@@ -19,6 +19,7 @@ import AudioPlayer from "./components/AudioPlayer.jsx"
 import VideoPlayer from "./components/VideoPlayer.jsx"
 import PodcastDetails from "./pages/PodcastDetails.jsx"
 import { closeSignin } from "./redux/setSigninSlice.jsx"
+import AddEpisode from "./components/AddEpisode.jsx"
 
 const Frame = styled.div`
   display: flex;
@@ -46,6 +47,8 @@ function App() {
   const [setSignInOpen] = useState(false)
   const [menuOpen, setMenuOpen] = useState(true)
   const [uploadOpen, setUploadOpen] = useState(false)
+  const [addEpisodeOpen, setAddEpisodeOpen] = useState(false);
+  const [selectedPodcastId, setSelectedPodcastId] = useState(null);
 
   const dispatch = useDispatch()
 
@@ -73,18 +76,19 @@ function App() {
         {opensi && <Signin setSignInOpen={setSignInOpen} setSignUpOpen={setSignUpOpen} />}
         {SignUpOpen && <Signup setSignInOpen={setSignInOpen} setSignUpOpen={setSignUpOpen} />}
         {uploadOpen && <Upload setUploadOpen={setUploadOpen} />}
+        {addEpisodeOpen && <AddEpisode setAddEpisodeOpen={setAddEpisodeOpen} podcastId={selectedPodcastId} />}
         {openplayer && type === 'video' && <VideoPlayer episode={episode} podid={podid} currenttime={currenttime} index={index} />}
         {openplayer && type === 'audio' && <AudioPlayer episode={episode} podid={podid} currenttime={currenttime} index={index} />}
         <Podcasts>
-          {menuOpen && <Menu setMenuOpen={setMenuOpen} setUploadOpen={setUploadOpen} />}
+          {menuOpen && <Menu setMenuOpen={setMenuOpen} setUploadOpen={setUploadOpen} setAddEpisodeOpen={setAddEpisodeOpen}/>}
           <Frame>
             <Navbar menuOpen={menuOpen} setMenuOpen={setMenuOpen} setUploadOpen={setUploadOpen} darkMode={darkMode} setDarkMode={setDarkMode} />
             <Routes>
               <Route path='/' exact element={<Dashboard setSignInOpen={setSignInOpen} />} />
               <Route path='/search' exact element={<Search />} />
               <Route path='/favourites' exact element={<Favourites />} />
-              <Route path='/profile' exact element={<Profile />} />
-              <Route path='/podcast/:id' exact element={<PodcastDetails />} />
+              <Route path='/profile' exact element={<Profile setUploadOpen={setUploadOpen} setAddEpisodeOpen={setAddEpisodeOpen} setSelectedPodcastId={setSelectedPodcastId} />} />
+              <Route path='/podcast/:id' exact element={<PodcastDetails setAddEpisodeOpen={setAddEpisodeOpen} setSelectedPodcastId={setSelectedPodcastId} />} />
               <Route path='/showpodcasts/:type' exact element={<DisplayPodcasts />} />
             </Routes>
           </Frame>

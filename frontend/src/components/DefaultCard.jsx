@@ -1,11 +1,10 @@
-import PropTypes from 'prop-types' 
+import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
 const Card = styled.div`
-  width:150px;
-  height:150px;
-  border-radius:0.6rem;
-  padding:1rem;
+  width: 175px;
+  height: 175px;
+  border-radius: 0.6rem;
   &:hover{
     cursor: pointer;
     transform: translateY(-8px);
@@ -20,16 +19,21 @@ const Card = styled.div`
 
 const DefaultCardText = styled.div`
   color: #F2F3F4;
-  font-size:1.4rem;
-  font-weight:600;
+  font-size: 1.4rem;
+  font-weight: 600;
+  position: relative;
+  z-index: 2;
+  margin: 0.5rem;
 `;
 
-const DefaultCardImg=styled.img`
-  height:90px;
-  width:80px;
+const DefaultCardImg = styled.img`
+  height: 100%;
+  width: 100%;
   object-fit: cover;
-  clip-path: polygon(0 0, 100% 0, 100% 66%, 0 98%);
-  transform:rotate(20deg);
+  position: absolute;
+  opacity: 0.6;
+  z-index: 1;  
+  border-radius: 0.6rem;
 `;
 
 const FlexContainer = styled.div`
@@ -38,20 +42,23 @@ const FlexContainer = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: flex-end;
+  position: relative;
+  z-index: 2;
 `;
 
 export const DefaultCard = ({ category }) => {
   return (
-    <Card style={{"backgroundColor":`${category.color}`}}>
-        <DefaultCardText>
-            {category.name}
-        </DefaultCardText>
-        <FlexContainer>
+    <Card style={{ "backgroundColor": `${category.color}` }}>
+      <FlexContainer>
         <DefaultCardImg
-            src={category.img}
-            alt="podcast-image"
+          src={category.img}
+          alt="podcast-image"
         />
-        </FlexContainer>
+        <DefaultCardText>
+          {category.name}
+        </DefaultCardText>
+
+      </FlexContainer>
     </Card>
   )
 }

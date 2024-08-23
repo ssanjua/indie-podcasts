@@ -59,14 +59,17 @@ const Categories = styled.div`
 `;
 
 const Search_whole = styled.div`
+  margin-top: 20px;
   max-width: 700px;
-  display:flex;
+  display: flex;
   width: 100%;
   border: 1px solid ${({ theme }) => theme.text_secondary};
-  border-radius:30px;
-  cursor:pointer;
-  padding:12px 16px;
+  box-shadow: 3px 3px 0px 0px ${({ theme }) => theme.text_secondary};
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 18px 16px;
   justify-content: flex-start;
+  background-color: ${({ theme }) => theme.bgMedium};
   align-items: center;
   gap: 6px;
   color: ${({ theme }) => theme.text_secondary};
@@ -133,8 +136,8 @@ const Search = () => {
       <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
         <Search_whole>
           <SearchOutlinedIcon sx={{ "color": "inherit" }} />
-          <input type='text' placeholder='Search Artist/Podcast'
-            style={{ "border": "none", "outline": "none", "width": "100%", "background": "inherit", "color": "inherit" }}
+          <input type='text' placeholder='Buscar podcast'
+            style={{  "font-size": "18px", "border": "none", "outline": "none", "width": "100%", "background": "inherit", "color": "inherit" }}
             value={searched}
             onChange={(e) => handleChange(e)} />
         </Search_whole>
