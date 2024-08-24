@@ -202,7 +202,7 @@ const Upload = ({ setUploadOpen }) => {
                       (e) => setPodcast({ ...podcast, type: e.target.value })
                     }>
                     <Option value="audio">Audio</Option>
-                    <Option value="video">Video</Option>
+                   Line <Option value="video">Video</Option>
                   </Select>
                 </OutlinedBox>
                 <OutlinedBox style={{ marginTop: "6px", width: '100%', marginLeft: '0px' }}>

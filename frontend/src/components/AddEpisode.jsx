@@ -1,8 +1,11 @@
-import PropTypes from 'prop-types';
-import { CloseRounded, CloudDoneRounded } from '@mui/icons-material';
-import { CircularProgress, LinearProgress, Modal } from "@mui/material";
-import { useState } from 'react';
-import styled from 'styled-components';
+import PropTypes from 'prop-types'
+import { CloseRounded, CloudDoneRounded } from '@mui/icons-material'
+import { CircularProgress, LinearProgress, Modal } from "@mui/material"
+import { useState, useEffect, useCallback } from 'react'
+import { useSelector } from 'react-redux'
+import { getUsers } from '../api/index'
+import styled from 'styled-components'
+import { EpisodeSelectionCard } from './EpisodeSelectionCard.jsx'
 import {
   getStorage,
   ref,
@@ -13,73 +16,107 @@ import app from "../firebase"
 import { useDispatch } from "react-redux"
 import { openSnackbar } from "../redux/snackbarSlice"
 import { addEpisodes } from '../api'
-import UploadRoundedIcon from '@mui/icons-material/UploadRounded';
+import UploadRoundedIcon from '@mui/icons-material/UploadRounded'
 
 
-const AddEpisode = ({ setAddEpisodeOpen, podcastId }) => {
+const AddEpisode = ({ setAddEpisodeOpen }) => {
+  const [userPodcasts, setUserPodcasts] = useState([]);
+  const { currentUser } = useSelector(state => state.user)
+  const [showEpisode, setShowEpisode] = useState(false)
+  const [selectedPodcast, setSelectedPodcast] = useState(null)
   const [episode, setEpisode] = useState({
     name: "",
     desc: "",
     file: "",
   })
-
-  const [loading, setLoading] = useState(false);
-  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false)
+  const dispatch = useDispatch()
 
   const token = localStorage.getItem("indiepodcasttoken")
 
+  const goToAddEpisodes = () => {
+    if (selectedPodcast) {
+      setShowEpisode(true)
+    }
+  }
+
+  const goToPodcast = () => {
+    setShowEpisode(false)
+  }
+
+  const fetchUserPodcasts = useCallback(async () => {
+    setLoading(true)
+    try {
+      const res = await getUsers(token)
+      setUserPodcasts(res.data.podcasts)
+    } catch (error) {
+      console.error('Error fetching user podcasts:', error)
+    } finally {
+      setLoading(false)
+    }
+  }, [token])
+
+  useEffect(() => {
+    if (currentUser) {
+      fetchUserPodcasts();
+    }
+  }, [fetchUserPodcasts, currentUser])
+
   const uploadFile = (file) => {
-    const storage = getStorage(app);
-    const fileName = new Date().getTime() + file.name;
-    const storageRef = ref(storage, fileName);
-    const uploadTask = uploadBytesResumable(storageRef, file);
+    const storage = getStorage(app)
+    const fileName = new Date().getTime() + file.name
+    const storageRef = ref(storage, fileName)
+    const uploadTask = uploadBytesResumable(storageRef, file)
 
     uploadTask.on(
       "state_changed",
       (snapshot) => {
-        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        setEpisode({ ...episode, uploadProgress: Math.round(progress) });
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        episode.file.uploadProgress = Math.round(progress)
+        setEpisode({ ...episode});
       },
       (error) => {
-        console.error("Upload failed:", error);
+        console.error("Upload failed:", error)
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          console.log("File uploaded successfully. Download URL:", downloadURL);
-          setEpisode({ ...episode, file: downloadURL });
-        }).catch((error) => {
-          console.error("Error getting download URL:", error);
-        });
+          // console.log("File uploaded successfully. Download URL:", downloadURL)
+          setEpisode({ ...episode, file: downloadURL })
+        }).catch(() => {
+          // console.error("Error getting download URL:", error)
+        })
       }
-    );
+    )
   }
 
   const addEpisode = async () => {
-    setLoading(true);
+    setLoading(true)
+    const episodeData = [{ ...episode, podId: selectedPodcast._id }]
+    console.log("enviando al backend:", episodeData)
 
-    await addEpisodes(podcastId, episode, token).then((res) => {
-      console.log("Response from backend:", res);
-      setAddEpisodeOpen(false);
-      setLoading(false);
+    await addEpisodes(episodeData, token).then((res) => {
+      console.log("Response from backend:", res)
+      setAddEpisodeOpen(false)
+      setLoading(false)
       dispatch(
         openSnackbar({
           open: true,
           message: "Episodio agregado con éxito!",
           severity: "success",
         })
-      );
+      )
     }).catch((err) => {
-      setLoading(false);
-      console.log("Error from backend:", err);
+      setLoading(false)
+      console.log("Error from backend:", err)
       dispatch(
         openSnackbar({
           open: true,
           message: "Error agregando el episodio",
           severity: "error",
         })
-      );
-    });
-  };
+      )
+    })
+  }
 
   return (
     <Modal open={true} onClose={() => setAddEpisodeOpen(false)}>
@@ -95,73 +132,123 @@ const AddEpisode = ({ setAddEpisodeOpen, podcastId }) => {
             onClick={() => setAddEpisodeOpen(false)}
           />
           <Title>Añadir Episodio</Title>
-          <Label>Detalles:</Label>
-          <FileUpload htmlFor="fileField">
-            {episode.file === "" ? (
-              <Uploading>
-              <UploadRoundedIcon />
-                Subí tu episodio
-              </Uploading>
-            ) : (
-              <Uploading>
-                {episode.file.name === undefined ? (
-                  <div style={{ color: 'green', display: 'flex', gap: '6px', alignItems: 'center', justifyContent: 'center' }}>
-                    <CloudDoneRounded sx={{ color: 'inherit' }} />
-                    Archivo subido!
-                  </div>
+          {!showEpisode ? (
+            <>
+              <SelectionContainer>
+                {loading ? (
+                  <LoadingContainer>
+                    <CircularProgress color="inherit" />
+                  </LoadingContainer>
                 ) : (
-                  <>
-                    Archivo: {episode.file.name}
-                    <LinearProgress
-                      sx={{ borderRadius: "10px", height: 3, width: "100%" }}
-                      variant="determinate"
-                      value={episode.uploadProgress}
-                      color={"success"}
-                    />
-                    {episode.uploadProgress}% subido
-                  </>
+                  userPodcasts.length > 0 ? (
+                    userPodcasts.map((podcast) => (
+                      <EpisodeSelectionCard
+                        podcast={podcast}
+                        key={podcast._id}
+                        user={currentUser}
+                        onClick={() => setSelectedPodcast(podcast)}
+                        selected={selectedPodcast?._id === podcast._id}
+                      />
+                    ))
+                  ) : (
+                    <Label>No tienes podcasts creados.</Label>
+                  )
                 )}
-              </Uploading>
-            )}
-          </FileUpload>
-          <File type="file" accept="audio/*|video/*" id="fileField"
-            onChange={(e) => {
-              const file = e.target.files[0];
-              setEpisode({ ...episode, file });
-              uploadFile(file);
-            }}
-          />
-          <OutlinedBox>
-            <TextInput
-              placeholder="Nombre*"
-              type="text"
-              value={episode.name}
-              onChange={(e) => setEpisode({ ...episode, name: e.target.value })}
-            />
-          </OutlinedBox>
-          <OutlinedBox style={{ marginTop: "6px" }}>
-            <Desc
-              placeholder="Descripción*"
-              name="desc"
-              rows={5}
-              value={episode.desc}
-              onChange={(e) => setEpisode({ ...episode, desc: e.target.value })}
-            />
-          </OutlinedBox>
-          <Elements>
-            <ButtonDiv
-              button={true}
-              activeButton={true}
-              style={{ marginTop: "22px", width: "100%", margin: 0 }}
-              onClick={addEpisode}
-            >
-              {loading ? (
-                <CircularProgress color="inherit" size={20} />
-              ) : (
-                "Añadir"
-              )}
-            </ButtonDiv>
-          </Elements>
+              </SelectionContainer>
+              <ButtonContainer>
+                <ButtonDiv
+                  button={true}
+                  style={{ marginTop: "22px", marginBottom: "18px" }}
+                  onClick={() => {
+                    goToAddEpisodes()
+                  }}
+                  disabled={!selectedPodcast}
+                >
+                  Siguiente
+                </ButtonDiv>
+              </ButtonContainer>
+            </>
+          ) : (
+            <>
+              <Label>Detalles:</Label>
+              <FileUpload htmlFor="fileField">
+                {episode.file === "" ? (
+                  <Uploading>
+                    <UploadRoundedIcon />
+                    Subí tu episodio
+                  </Uploading>
+                ) : (
+                  <Uploading>
+                    {episode.file.name === undefined ? (
+                      <div style={{ color: 'green', display: 'flex', gap: '6px', alignItems: 'center', justifyContent: 'center' }}>
+                        <CloudDoneRounded sx={{ color: 'inherit' }} />
+                        Archivo subido!
+                      </div>
+                    ) : (
+                      <>
+                        Archivo: {episode.file.name}
+                        <LinearProgress
+                          sx={{ borderRadius: "10px", height: 3, width: "100%" }}
+                          variant="determinate"
+                          value={episode.file.uploadProgress}
+                          color={"success"}
+                        />
+                        {episode.file.uploadProgress}% subido
+                      </>
+                    )}
+                  </Uploading>
+                )}
+              </FileUpload>
+              <File type="file" accept="audio/*|video/*" id="fileField"
+                onChange={(e) => {
+                  const file = e.target.files[0];
+                  setEpisode({ ...episode, file });
+                  uploadFile(file);
+                }}
+              />
+              <OutlinedBox>
+                <TextInput
+                  placeholder="Nombre*"
+                  type="text"
+                  value={episode.name}
+                  onChange={(e) => setEpisode({ ...episode, name: e.target.value })}
+                />
+              </OutlinedBox>
+              <OutlinedBox style={{ marginTop: "6px" }}>
+                <Desc
+                  placeholder="Descripción*"
+                  name="desc"
+                  rows={5}
+                  value={episode.desc}
+                  onChange={(e) => setEpisode({ ...episode, desc: e.target.value })}
+                />
+              </OutlinedBox>
+              <Elements>
+                <ButtonDiv
+                  button={true}
+                  activeButton={false}
+                  style={{ marginTop: "6px", width: "100%", margin: 0 }}
+                  onClick={() => {
+                    goToPodcast();
+                  }}
+                >
+                  Atrás
+                </ButtonDiv>
+                <ButtonDiv
+                  button={true}
+                  activeButton={true}
+                  style={{ marginTop: "22px", width: "100%", margin: 0 }}
+                  onClick={addEpisode}
+                >
+                  {loading ? (
+                    <CircularProgress color="inherit" size={20} />
+                  ) : (
+                    "Añadir"
+                  )}
+                </ButtonDiv>
+              </Elements>
+            </>
+          )}
         </Wrapper>
       </Container>
     </Modal>
@@ -172,7 +259,6 @@ export default AddEpisode;
 
 AddEpisode.propTypes = {
   setAddEpisodeOpen: PropTypes.func.isRequired,
-  podcastId: PropTypes.string.isRequired,
 }
 
 const Container = styled.div`
@@ -183,7 +269,7 @@ const Container = styled.div`
   left: 0;
   background-color: #000000a7;
   display: flex;
-  align-items: top;
+  align-items: center;
   justify-content: center;
   overflow-y: scroll;
 `;
@@ -287,6 +373,8 @@ const ButtonDiv = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
+  pointer-events: ${({ disabled }) => (disabled ? 'none' : 'auto')};
   gap: 6px;
   box-shadow: 3px 3px 0px 0px ${({ theme }) => theme.text_secondary};
   &:hover{
@@ -294,9 +382,17 @@ const ButtonDiv = styled.div`
   }
 `;
 
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content:center;
+  align-items: center;
+  margin-top: 16px;
+`
+
 const Elements = styled.div`  
   text-align: center;
   display: flex;
+  gap: 8px;
   align-items: center;
   justify-content: center;
   margin: 16px;
@@ -332,3 +428,20 @@ const Uploading = styled.div`
 const File = styled.input`
   display: none;
 `;
+
+const SelectionContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  width: 100%;
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); 
+  }
+`;
+
+const LoadingContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%; 
+  width: 100%; 
+`

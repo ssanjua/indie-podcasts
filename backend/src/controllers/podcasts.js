@@ -24,7 +24,7 @@ exports.createPodcast = async (req, res, next) => {
     // Create a new podcast
     const podcast = new Podcasts(
       {
-        creator: user.id, 
+        creator: user.id,
         episodes: episodeList,
         name: req.body.name,
         desc: req.body.desc,
@@ -51,27 +51,38 @@ exports.createPodcast = async (req, res, next) => {
 
 exports.addepisodes = async (req, res, next) => {
   try {
+    console.log("Request Body:", req.body)
     const user = await User.findById(req.user.id);
+    console.log("User Found:", user)
 
-    await Promise.all(req.body.episodes.map(async (item) => {
+    await Promise.all(req.body.map(async (item) => {
 
       const episode = new Episodes(
-        { creator: user.id, ...item }
-      );
+        { creator: user.id, ...item });
+      console.log("Episode to be saved:", episode)
+
       const savedEpisode = await episode.save();
+      console.log("Saved Episode:", savedEpisode)
 
-      // update the podcast
-      await Podcasts.findByIdAndUpdate(
-        req.body.podid, {
-        $push: { episodes: savedEpisode.id },
+      console.log("podId:", item.podId)
 
-      }, { new: true }
+      // Convert `podId` to ObjectId
+      // const podcastId = mongoose.Types.ObjectId(item.podId);
+
+      // Try to update the podcast
+      const updatedPodcast = await Podcasts.findByIdAndUpdate(
+        item.podId,
+        { $push: { episodes: savedEpisode.id } },
+        { new: true }
       )
+
+      console.log("Updated Podcast:", updatedPodcast)
     }));
 
     res.status(201).json({ message: "Episode added successfully" });
 
   } catch (err) {
+    console.error("Error:", err)
     next(err);
   }
 }

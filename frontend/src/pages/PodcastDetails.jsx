@@ -144,7 +144,7 @@ const Icon = styled.div`
   font-size: 12px;
   margin-left: 20px;
   border-radius: 50%;
-  background: #9000ff !important;
+  background: #fecd23 !important;
   display: flex;
   align-items: center;
   justify-content: center;

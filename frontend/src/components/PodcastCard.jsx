@@ -19,7 +19,7 @@ const PlayIcon = styled.div`
   z-index: 100;
   display: flex;
   align-items: center;
-  background: #9000ff !important;
+  background: #fecd23 !important;
   color: white !important;
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
