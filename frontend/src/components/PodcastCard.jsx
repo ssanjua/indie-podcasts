@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { openSignin } from '../redux/setSigninSlice'
 import HeadphonesIcon from '@mui/icons-material/Headphones'
-import PlayArrowIcon from '@mui/icons-material/PlayArrow'
+import OndemandVideoRoundedIcon from '@mui/icons-material/OndemandVideoRounded';
 
 
 const PlayIcon = styled.div`
@@ -28,7 +28,6 @@ const PlayIcon = styled.div`
   right: 10%;
   display: none;
   transition: all 0.4s ease-in-out;
-  box-shadow: 0 0 16px 4px #9000ff50 !important;
 `;
 
 const Card = styled(Link)`
@@ -223,7 +222,7 @@ export const PodcastCard = ({ podcast, user }) => {
       </div>
       <PlayIcon>
         {podcast?.type === 'video' ?
-          <PlayArrowIcon style={{ width: '28px', height: '28px' }} />
+          <OndemandVideoRoundedIcon style={{ width: '28px', height: '28px' }} />
           :
           <HeadphonesIcon style={{ width: '28px', height: '28px' }} />
         }
@@ -252,11 +251,3 @@ PodcastCard.propTypes = {
   }).isRequired,
   setSignInOpen: PropTypes.func.isRequired
 }
-
-
-
-
-
-
-
-

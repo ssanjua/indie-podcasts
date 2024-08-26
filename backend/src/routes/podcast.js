@@ -5,6 +5,8 @@ const {
   addepisodes, 
   createPodcast, 
   favoritPodcast, 
+  deletePodcast,
+  deleteEpisode,
   getByCategory, 
   getByTag, 
   getPodcastById, 
@@ -22,6 +24,12 @@ router.post("/",verifyToken, createPodcast);
 router.get("/", getPodcasts);
 //get podcast by id
 router.get("/get/:id",getPodcastById)
+
+//delete a podcast
+router.delete("/:id", verifyToken, deletePodcast);
+
+//delte an episode
+router.delete("/episode/:id", verifyToken, deleteEpisode);
 
 //add episode to a 
 router.post("/episode",verifyToken, addepisodes);

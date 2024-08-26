@@ -8,6 +8,7 @@ export const darkTheme = {
   text_inverted:"#111111",
   card:"#121212",
   button:"#5c5b5b",
+  primaryYellow:"#fecd23",
 }
 
 export const lightTheme = {
@@ -20,4 +21,5 @@ export const lightTheme = {
   text_inverted:"#F2F3F4",
   card:"#FFFFFF",
   button:"#5c5b5b",
+  primaryYellow:"#fecd23",
 }

@@ -53,6 +53,20 @@ function App() {
   const dispatch = useDispatch()
 
   useEffect(() => {
+    // Leer el tema guardado en localStorage
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      setDarkMode(savedTheme === 'dark');
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    const newTheme = !darkMode;
+    setDarkMode(newTheme);
+    localStorage.setItem('theme', newTheme ? 'dark' : 'light');
+  };
+
+  useEffect(() => {
     const resize = () => {
       if (window.innerWidth < 1110) {
         setMenuOpen(false)
@@ -69,6 +83,8 @@ function App() {
     dispatch(closeSignin())
   }, [dispatch])
 
+
+
   return (
 
     <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
@@ -80,9 +96,9 @@ function App() {
         {openplayer && type === 'video' && <VideoPlayer episode={episode} podid={podid} currenttime={currenttime} index={index} />}
         {openplayer && type === 'audio' && <AudioPlayer episode={episode} podid={podid} currenttime={currenttime} index={index} />}
         <Podcasts>
-          {menuOpen && <Menu setMenuOpen={setMenuOpen} setUploadOpen={setUploadOpen} setAddEpisodeOpen={setAddEpisodeOpen}/>}
+          {menuOpen && <Menu setMenuOpen={setMenuOpen} setUploadOpen={setUploadOpen} setAddEpisodeOpen={setAddEpisodeOpen} />}
           <Frame>
-            <Navbar menuOpen={menuOpen} setMenuOpen={setMenuOpen} setUploadOpen={setUploadOpen} darkMode={darkMode} setDarkMode={setDarkMode} />
+            <Navbar menuOpen={menuOpen} setMenuOpen={setMenuOpen} setUploadOpen={setUploadOpen} darkMode={darkMode} setDarkMode={toggleTheme} />
             <Routes>
               <Route path='/' exact element={<Dashboard setSignInOpen={setSignInOpen} />} />
               <Route path='/search' exact element={<Search />} />

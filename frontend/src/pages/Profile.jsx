@@ -4,9 +4,10 @@ import { useSelector } from 'react-redux'
 import styled from "styled-components"
 import Avatar from '@mui/material/Avatar'
 import { getUsers } from '../api/index'
-import { PodcastCard } from '../components/PodcastCard.jsx'
 import { Link } from 'react-router-dom'
-import UploadRoundedIcon from '@mui/icons-material/UploadRounded';
+import UploadRoundedIcon from '@mui/icons-material/UploadRounded'
+import PodcastProfileCard from '../components/PodcastProfileCard.jsx'
+import { CircularProgress } from '@mui/material'
 
 const ProfileAvatar = styled.div`
   padding-left:3rem;
@@ -55,17 +56,6 @@ const Topic = styled.div`
   justify-content: space-between;
   align-items: center;
 `;
-
-// const Span = styled.span`
-//     color: ${({ theme }) => theme.text_secondary};
-//     font-size: 16px;
-//     font-weight: 400;
-//     cursor: pointer;
-//     color: ${({ theme }) => theme.primary};
-//     &:hover{
-//       transition: 0.2s ease-in-out;
-//     }
-// `;
 
 const Podcasts = styled.div`
   display: flex;
@@ -167,22 +157,41 @@ const AddContentContainer = styled.div`
   gap: 12px;
 `;
 
+const Loader = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+`;
+
 const Profile = ({ setUploadOpen, setAddEpisodeOpen }) => {
   const [user, setUser] = useState()
   const { currentUser } = useSelector(state => state.user)
   const [name, setName] = useState("")
+  const [loading, setLoading] = useState()
 
   const token = localStorage.getItem("indiepodcasttoken")
 
   const getUser = useCallback(async () => {
+    setLoading(true)
     try {
       const res = await getUsers(token)
       setName(res.data.name)
-      setUser(res.data);
+      setUser(res.data)
+      setLoading(false)
     } catch (error) {
       console.log(error)
+      setLoading(false)
     }
   }, [token])
+
+  const handleDeletePodcast = (podcastId) => {
+    setUser(prevUser => ({
+      ...prevUser,
+      podcasts: prevUser.podcasts.filter(podcast => podcast._id !== podcastId)
+    }));
+  }
 
   useEffect(() => {
     if (currentUser) {
@@ -192,64 +201,75 @@ const Profile = ({ setUploadOpen, setAddEpisodeOpen }) => {
 
   return (
     <ProfileMain>
-      <UserDetails>
-        <ProfileAvatar>
-          <Avatar sx={{ height: 125, width: 125, fontSize: '24px' }} src={user?.img}>{user?.name.charAt(0).toUpperCase()}</Avatar>
-        </ProfileAvatar>
-        <ProfileContainer>
-          <ProfileName>{name}</ProfileName>
-          <Profile_email>Email: {user?.email}</Profile_email>
-        </ProfileContainer>
-      </UserDetails>
-      {currentUser && user?.podcasts.length > 0 &&
-        <FilterContainer box={true}>
-          <Topic>Tus podcasts
-          </Topic>
-          <Podcasts>
-            {user?.podcasts.map((podcast) => (
-              <PodcastCard podcast={podcast} key={podcast._id} user={user} />
-            ))}
-          </Podcasts>
-        </FilterContainer>
+      {loading ?
+        <Loader>
+          <CircularProgress />
+        </Loader>
+        :
+        <>
+          <UserDetails>
+            <ProfileAvatar>
+              <Avatar sx={{ height: 125, width: 125, fontSize: '24px' }} src={user?.img}>{user?.name.charAt(0).toUpperCase()}</Avatar>
+            </ProfileAvatar>
+            <ProfileContainer>
+              <ProfileName>{name}</ProfileName>
+              <Profile_email>Email: {user?.email}</Profile_email>
+            </ProfileContainer>
+          </UserDetails>
+          {currentUser && user?.podcasts.length > 0 &&
+            <FilterContainer box={true}>
+              <Topic>Tus podcasts</Topic>
+              <Podcasts>
+                {user?.podcasts.map((podcast) => (
+                  <PodcastProfileCard
+                    podcast={podcast}
+                    key={podcast._id}
+                    onDelete={handleDeletePodcast}
+                  />
+                ))}
+              </Podcasts>
+            </FilterContainer>
+          }
+          <AddContentContainer>
+            <UploadContainer box={true} >
+              <SubTopic>Nuevo Podcast</SubTopic>
+              <Container>
+                <ButtonContainer>
+                  {currentUser && (
+                    <Link
+                      onClick={() => setUploadOpen(true)}
+                      style={{ textDecoration: "none", color: "inherit" }}
+                    >
+                      <Elements>
+                        <UploadRoundedIcon />
+                        Subir
+                      </Elements>
+                    </Link>
+                  )}
+                </ButtonContainer>
+              </Container>
+            </UploadContainer>
+            <UploadContainer box={true} >
+              <SubTopic>Nuevo Epidosio</SubTopic>
+              <Container>
+                <ButtonContainer>
+                  {currentUser && (
+                    <Link
+                      onClick={() => setAddEpisodeOpen(true)}
+                      style={{ textDecoration: "none", color: "inherit" }}
+                    >
+                      <Elements>
+                        <UploadRoundedIcon />
+                        Subir
+                      </Elements>
+                    </Link>
+                  )}
+                </ButtonContainer>
+              </Container>
+            </UploadContainer>
+          </AddContentContainer>
+        </>
       }
-      <AddContentContainer>
-        <UploadContainer box={true} >
-          <SubTopic>Nuevo Podcast</SubTopic>
-          <Container>
-            <ButtonContainer>
-              {currentUser && (
-                <Link
-                  onClick={() => setUploadOpen(true)}
-                  style={{ textDecoration: "none", color: "inherit" }}
-                >
-                  <Elements>
-                    <UploadRoundedIcon />
-                    Subir
-                  </Elements>
-                </Link>
-              )}
-            </ButtonContainer>
-          </Container>
-        </UploadContainer>
-        <UploadContainer box={true} >
-          <SubTopic>Nuevo Epidosio</SubTopic>
-          <Container>
-            <ButtonContainer>
-              {currentUser && (
-                <Link
-                  onClick={() => setAddEpisodeOpen(true)}
-                  style={{ textDecoration: "none", color: "inherit" }}
-                >
-                  <Elements>
-                    <UploadRoundedIcon />
-                    Subir
-                  </Elements>
-                </Link>
-              )}
-            </ButtonContainer>
-          </Container>
-        </UploadContainer>
-      </AddContentContainer>
     </ProfileMain>
   )
 }

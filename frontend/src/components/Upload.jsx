@@ -25,12 +25,12 @@ const Upload = ({ setUploadOpen }) => {
     thumbnail: "",
     tags: [],
     category: "",
-    type: "",
+    type: "audio",
     episodes: [
       {
         name: "",
         desc: "",
-        type: "",
+        type: "audio",
         file: "",
       }
     ],
@@ -67,7 +67,7 @@ const Upload = ({ setUploadOpen }) => {
           {
             name: "",
             desc: "",
-            type: "",
+            type: "audio",
             file: "",
           }
         ],

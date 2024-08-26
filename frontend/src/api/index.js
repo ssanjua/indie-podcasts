@@ -47,3 +47,5 @@ export const getMostPopularPodcast = async () => await API.get('/podcasts/mostpo
 export const getPodcastById = async (id) => await API.get(`/podcasts/get/${id}`)
 export const addView = async (id) => await API.post(`/podcasts/addview/${id}`)
 export const searchPodcast = async (search) => await API.get(`/podcasts/search?q=${search}`)
+export const deletePodcast = async (podcast, token) => await API.delete(`/podcasts/${podcast}`, { headers: { "Authorization": `Bearer ${token}` } }, { withCredentials: true })
+export const deleteEpisode = async (episodeId, token) => await API.delete(`/podcasts/episode/${episodeId}`, { headers: { "Authorization": `Bearer ${token}` }, withCredentials: true })

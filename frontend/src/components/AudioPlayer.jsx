@@ -254,7 +254,6 @@ const AudioPlayer = ({ episode, podid, currenttime, index }) => {
           <Artist>{episode?.creator.name}</Artist>
         </PodData>
       </Left>
-
       <Player>
         <Controls>
           <IcoButton>

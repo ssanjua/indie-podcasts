@@ -107,6 +107,34 @@ exports.getPodcastById = async (req, res, next) => {
   }
 };
 
+exports.deletePodcast = async (req, res, next) => {
+  try {
+    const podcast = await Podcasts.findById(req.params.id);
+    if (!podcast) {
+      return next(createError(404, "Podcast not found"));
+    }
+
+    if (req.user.id !== podcast.creator.toString()) {
+      return next(createError(403, "You dont have permission to do this"));
+    }
+
+    // Eliminar todos los episodios asociados a este podcast
+    await Episodes.deleteMany({ _id: { $in: podcast.episodes } });
+
+    // eliminar el podcast
+    await podcast.deleteOne();
+
+    // eliminar el podcast del usuario
+    await User.findByIdAndUpdate(podcast.creator, {
+      $pull: { podcasts: req.params.id },
+    });
+
+    res.status(200).json("Podcast deleted");
+  } catch (err) {
+    next(err);
+  }
+};
+
 exports.favoritPodcast = async (req, res, next) => {
   // Check if the user is the creator of the podcast
   const user = await User.findById(req.user.id);
@@ -139,6 +167,32 @@ exports.favoritPodcast = async (req, res, next) => {
     res.status(200).json({ message: "Added to favorit" });
   }
 }
+
+exports.deleteEpisode = async (req, res, next) => {
+  try {
+    const episode = await Episodes.findById(req.params.id);
+    if (!episode) {
+      return next(createError(404, "Episode not found"));
+    }
+
+    // verifica si el usuario es el creador del episodio
+    if (req.user.id !== episode.creator.toString()) {
+      return next(createError(403, "You dont have permission to do this"));
+    }
+
+    // eliminar el episodio
+    await episode.deleteOne();
+
+    // remover el episodio del podcast correspondiente
+    await Podcasts.findByIdAndUpdate(episode.podcast, {
+      $pull: { episodes: req.params.id },
+    });
+
+    res.status(200).json("Episode deleted");
+  } catch (err) {
+    next(err);
+  }
+};
 
 //add view 
 exports.addView = async (req, res, next) => {

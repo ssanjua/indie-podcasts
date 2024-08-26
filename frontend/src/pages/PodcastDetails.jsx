@@ -3,14 +3,18 @@ import styled from 'styled-components'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import { CircularProgress, IconButton } from '@mui/material'
 import { favoritePodcast, getPodcastById, getUsers } from '../api'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import Episodecard from '../components/Episodecard'
 import { openSnackbar } from '../redux/snackbarSlice'
 import Avatar from '@mui/material/Avatar'
 import { format } from 'timeago.js'
-import PlayArrowIcon from '@mui/icons-material/PlayArrow'
+import { deletePodcast } from '../api'
+import OndemandVideoRoundedIcon from '@mui/icons-material/OndemandVideoRounded'
 import HeadphonesIcon from '@mui/icons-material/Headphones'
+import EditRoundedIcon from '@mui/icons-material/EditRounded'
+import { DialogPopUp } from '../components/DialogPopUp'
+import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded'
 
 const Container = styled.div`
   padding: 20px 30px;
@@ -151,16 +155,40 @@ const Icon = styled.div`
   padding: 6px;
 `;
 
+const Delete = styled(IconButton)`
+  color:white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  background: ${({ theme }) => theme.text_secondary + 80} !important;
+  color: white !important;
+  &:hover{
+    background: ${({ theme }) => theme.primary};
+  }
+`;
+
+const Edit = styled(IconButton)`
+  color:white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  background: ${({ theme }) => theme.text_secondary + 80} !important;
+  color: white !important;
+`;
+
 const PodcastDetails = () => {
   const { id } = useParams();
   const [favourite, setFavourite] = useState(false)
   const [podcast, setPodcast] = useState()
   const [user, setUser] = useState()
   const [loading, setLoading] = useState()
+  const [confirmOpen, setConfirmOpen] = useState(false)
 
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const token = localStorage.getItem("indiepodcasttoken")
+  
   //user
   const { currentUser } = useSelector(state => state.user)
 
@@ -241,8 +269,34 @@ const PodcastDetails = () => {
     if (user?.favorits?.find((fav) => fav._id === podcast?._id)) {
       setFavourite(true)
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser, podcast])
+
+  const handleDelete = async () => {
+    try {
+      const res = await deletePodcast(podcast._id, token)
+      if (res.status === 200) {
+        navigate('/profile')
+      }
+    } catch (err) {
+      console.log(err)
+      dispatch(
+        openSnackbar({
+          message: err.message,
+          severity: "error",
+        })
+      )
+    }
+  }
+
+  const openConfirmDialog = () => {
+    setConfirmOpen(true)
+  };
+
+  const closeConfirmDialog = () => {
+    setConfirmOpen(false)
+  }
+
 
   return (
     <Container>
@@ -252,20 +306,29 @@ const PodcastDetails = () => {
         </Loader>
         :
         <>
-          <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%' }}>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%', gap: '6px' }}>
+            {currentUser?._id === podcast?.creator?._id && (
+              <>
+                <Delete >
+                  <DeleteForeverRoundedIcon onClick={openConfirmDialog} />
+                </Delete>
+                <Edit>
+                  <EditRoundedIcon />
+                </Edit>
+              </>
+            )}
             <Favorite onClick={() => favoritpodcast()}>
               {favourite ?
-                <FavoriteIcon style={{ color: "#E30022", width: '16px', height: '16px' }}></FavoriteIcon>
+                <FavoriteIcon style={{ color: "#E30022" }}></FavoriteIcon>
                 :
-                <FavoriteIcon style={{ width: '16px', height: '16px' }}></FavoriteIcon>
+                <FavoriteIcon></FavoriteIcon>
               }
             </Favorite>
           </div>
           <Top>
             <Image src={podcast?.thumbnail} />
             <Details>
-              <Title>{podcast?.name}
-              </Title>
+              <Title>{podcast?.name}</Title>
               <Description>{podcast?.desc}</Description>
               <Tags>
                 {podcast?.tags.map((tag) => (
@@ -285,7 +348,7 @@ const PodcastDetails = () => {
                   {podcast?.type === "audio" ?
                     <HeadphonesIcon />
                     :
-                    <PlayArrowIcon />
+                    <OndemandVideoRoundedIcon />
                   }
                 </Icon>
               </CreatorContainer>
@@ -295,10 +358,16 @@ const PodcastDetails = () => {
             <Topic>Todos los episodios</Topic>
             <EpisodeWrapper>
               {podcast?.episodes.map((episode, index) => (
-                <Episodecard episode={episode} podid={podcast} type={podcast.type} key={podcast._id} user={user} index={index} />
+                <Episodecard currentUser={currentUser} podcast={podcast} episode={episode} podid={podcast} type={podcast.type} key={episode._id} index={index} />
               ))}
             </EpisodeWrapper>
           </Episodes>
+          <DialogPopUp
+            open={confirmOpen}
+            title="¿Estás seguro de eliminar el podcast?"
+            onConfirm={handleDelete}
+            onCancel={closeConfirmDialog}
+          />
         </>
       }
     </Container >

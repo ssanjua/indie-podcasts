@@ -3,9 +3,6 @@ import { CloseRounded } from '@mui/icons-material'
 import { Modal } from '@mui/material'
 import { useRef } from 'react'
 import styled from 'styled-components'
-// import PlayArrowIcon from '@mui/icons-material/PlayArrow'
-// import PauseIcon from '@mui/icons-material/Pause'
-// import VolumeUpIcon from '@mui/icons-material/VolumeUp'
 import { useDispatch } from 'react-redux'
 import { closePlayer, openPlayer, setCurrentTime } from '../redux/audioplayerSlice'
 import { openSnackbar } from '../redux/snackbarSlice'
@@ -93,7 +90,6 @@ const Btn = styled.div`
       background-color: ${({ theme }) => theme.card_hover};
   }
 `;
-
 
 const VideoPlayer = ({ episode, podid, currenttime, index }) => {
   const dispatch = useDispatch()
@@ -193,10 +189,10 @@ const VideoPlayer = ({ episode, podid, currenttime, index }) => {
           <EpisodeDescription>{episode.desc}</EpisodeDescription>
           <BtnContainer>
             <Btn onClick={() => goToPreviousPodcast()}>
-              Previous
+              Anterior
             </Btn>
             <Btn onClick={() => goToNextPodcast()}>
-              Next
+              Siguiente
             </Btn>
           </BtnContainer>
         </Wrapper>
