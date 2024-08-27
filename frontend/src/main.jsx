@@ -7,6 +7,7 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import '@fontsource-variable/inter';
+import '@fontsource/press-start-2p';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

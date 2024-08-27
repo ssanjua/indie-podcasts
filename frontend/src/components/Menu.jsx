@@ -11,7 +11,7 @@ import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded'
 import UploadRoundedIcon from '@mui/icons-material/UploadRounded';
 import ExitToAppRoundedIcon from '@mui/icons-material/ExitToAppRounded'
 import CloseRounded from '@mui/icons-material/CloseRounded'
-import LogoIcon from '/podcastindex.svg'
+import LogoIcon from '/logo.webp'
 import { openSignin } from '../redux/setSigninSlice'
 import AnnouncementRoundedIcon from '@mui/icons-material/AnnouncementRounded';
 
@@ -50,7 +50,7 @@ const Elements = styled.div`
   color:  ${({ theme }) => theme.text_secondary};
   width: 100%;
   &:hover{
-    background-color: ${({ theme }) => theme.text_secondary + 50};
+    background-color: ${({ theme }) => theme.text_secondary + 10};
     // border: 1px solid ${({ theme }) => theme.text_secondary};
     // box-shadow: 3px 3px 0px 0px ${({ theme }) => theme.text_secondary};
   }
@@ -89,12 +89,14 @@ const Logo = styled.div`
   justify-content: center;
   gap: 6px;
   font-weight: bold;
-  font-size: 20px;
+  font-size: 16px;
   margin: 16px 0px;
+  font-family: 'Press Start 2P', system-ui;
+  text-shadow: 1px 2px 0px ${({ theme }) => theme.text_secondary};
 `;
 
 const Image = styled.img`
-  height: 40px;
+  height: 35px;
 `;
 
 const Menu = ({ setMenuOpen, setUploadOpen, setAddEpisodeOpen }) => {
@@ -113,7 +115,7 @@ const Menu = ({ setMenuOpen, setUploadOpen, setAddEpisodeOpen }) => {
         <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
           <Logo>
             <Image src={LogoIcon} />
-            indiePodcasts
+            INDIEPODCASTS
           </Logo>
         </Link>
         <Close>

@@ -37,7 +37,7 @@ const ButtonDiv = styled.div`
   font-size: 14px;
   cursor: pointer;
   text-decoration: none;
-  color: ${({ theme }) => theme.primary};
+  color: ${({ theme }) => theme.text_primary};
   border: 1px solid ${({ theme }) => theme.text_secondary};
   width: 100%;
   max-width: 70px;
@@ -47,10 +47,11 @@ const ButtonDiv = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-left: 0.8rem;
   gap: 6px;
-  box-shadow: 3px 3px 0px 0px ${({ theme }) => theme.text_secondary};
+  box-shadow: 3px 3px 0px 0px ${({ theme }) => theme.primary};
   &:hover{
-    background-color: ${({ theme }) => theme.text_secondary + 50};
+    background-color: ${({ theme }) => theme.text_secondary + 10};
   }
 `;
 
@@ -71,7 +72,7 @@ const Elements = styled.div`
   text-decoration: none;
   color: ${({ theme }) => theme.text_secondary};
   // border: 1px solid ${({ theme }) => theme.text_secondary};
-  border-radius: 8px;
+  border-radius: 4px;
   width: 100%;
   max-width: 70px;
   padding: 8px;
@@ -79,9 +80,10 @@ const Elements = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  // box-shadow: 3px 3px 0px 0px ${({ theme }) => theme.text_secondary};
   gap: 6px;
   &:hover{
-    background-color: ${({ theme }) => theme.text_secondary + 50};
+    background-color: ${({ theme }) => theme.text_secondary + 10};
     color: ${({ theme }) => theme.text_primary};
   }
 `;
@@ -99,11 +101,12 @@ const SearchBar = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  // box-shadow: 3px 3px 0px 0px ${({ theme }) => theme.prima};
   cursor: pointer;
   padding: 8px;
-  border-radius: 8px;
+  border-radius: 4px;
     &:hover{
-    background-color: ${({ theme }) => theme.text_secondary + 50};
+    background-color: ${({ theme }) => theme.text_secondary + 10};
     color: ${({ theme }) => theme.text_primary};
   }
 `;
@@ -129,7 +132,7 @@ const Navbar = ({ menuOpen, setMenuOpen, setUploadOpen, darkMode, setDarkMode })
       <RightDiv>
         <Link to='/search'>
           <SearchBar>
-            <SearchRoundedIcon />
+            <SearchRoundedIcon  />
           </SearchBar>
         </Link>
         <Elements onClick={() => {
