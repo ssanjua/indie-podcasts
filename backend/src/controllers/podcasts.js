@@ -99,7 +99,6 @@ exports.getPodcasts = async (req, res, next) => {
 
 exports.getPodcastById = async (req, res, next) => {
   try {
-    // Get the podcasts from the database
     const podcast = await Podcasts.findById(req.params.id).populate("creator", "name img").populate("episodes");
     return res.status(200).json(podcast);
   } catch (err) {
@@ -118,13 +117,10 @@ exports.deletePodcast = async (req, res, next) => {
       return next(createError(403, "You dont have permission to do this"));
     }
 
-    // Eliminar todos los episodios asociados a este podcast
     await Episodes.deleteMany({ _id: { $in: podcast.episodes } });
 
-    // eliminar el podcast
     await podcast.deleteOne();
 
-    // eliminar el podcast del usuario
     await User.findByIdAndUpdate(podcast.creator, {
       $pull: { podcasts: req.params.id },
     });
@@ -224,6 +220,26 @@ exports.mostpopular = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.latestPodcast = async (req, res, next) => {
+  try {
+    const podcast = await Podcasts.find().sort({ createdAt: -1 }).limit(8).populate("creator", "name img").populate("episodes");
+    res.status(200).json(podcast);
+  } catch (err) {
+    console.log("error en latest podcasts:", err)
+    next(err)
+  }
+}
+
+exports.latestEpisodes = async (req, res, next) => {
+  try {
+    const episode = await Episodes.find().sort({ createdAt: -1 }).limit(8).populate("creator", "name img");
+    res.status(200).json(episode);
+  } catch (err) {
+    console.log("error en latest episode:", err)
+    next(err)
+  }
+}
 
 exports.getByTag = async (req, res, next) => {
   const tags = req.query.tags.split(",");

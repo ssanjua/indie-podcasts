@@ -80,15 +80,6 @@ const Loader = styled.div`
   width: 100%;
 `;
 
-// const DisplayNo = styled.div`
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   height: 100%;
-//   width: 100%;
-//   color: ${({ theme }) => theme.text_primary};
-// `;
-
 const Dashboard = ({ setSignInOpen }) => {
   const [mostPopular, setMostPopular] = useState([])
   const [user, setUser] = useState()

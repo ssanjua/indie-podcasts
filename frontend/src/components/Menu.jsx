@@ -152,7 +152,7 @@ const Menu = ({ setMenuOpen, setUploadOpen, setAddEpisodeOpen }) => {
             </Elements>
           </Link >
       }
-      <Link to='/' style={{ textDecoration: "none", color: "inherit", width: '100%' }}>
+      <Link to='/new' style={{ textDecoration: "none", color: "inherit", width: '100%' }}>
         <Elements>
           <AnnouncementRoundedIcon />
           <NavText>Novedades</NavText>

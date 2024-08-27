@@ -20,6 +20,7 @@ import VideoPlayer from "./components/VideoPlayer.jsx"
 import PodcastDetails from "./pages/PodcastDetails.jsx"
 import { closeSignin } from "./redux/setSigninSlice.jsx"
 import AddEpisode from "./components/AddEpisode.jsx"
+import NewContent from "./pages/NewContent.jsx"
 
 const Frame = styled.div`
   display: flex;
@@ -39,16 +40,16 @@ const Podcasts = styled.div`
 
 function App() {
 
-  const [darkMode, setDarkMode] = useState(true)
+  const [ darkMode, setDarkMode ] = useState(true)
   const { open, message, severity } = useSelector((state) => state.snackbar)
   const { openplayer, type, episode, podid, currenttime, index } = useSelector((state) => state.audioplayer)
   const { opensi } = useSelector((state) => state.signin)
-  const [SignUpOpen, setSignUpOpen] = useState(false)
-  const [setSignInOpen] = useState(false)
-  const [menuOpen, setMenuOpen] = useState(true)
-  const [uploadOpen, setUploadOpen] = useState(false)
-  const [addEpisodeOpen, setAddEpisodeOpen] = useState(false);
-  const [selectedPodcastId, setSelectedPodcastId] = useState(null);
+  const [ SignUpOpen, setSignUpOpen ] = useState(false)
+  const [ setSignInOpen ] = useState(false)
+  const [ menuOpen, setMenuOpen ] = useState(true)
+  const [ uploadOpen, setUploadOpen ] = useState(false)
+  const [ addEpisodeOpen, setAddEpisodeOpen ] = useState(false);
+  const [ selectedPodcastId, setSelectedPodcastId ] = useState(null);
 
   const dispatch = useDispatch()
 
@@ -101,6 +102,7 @@ function App() {
             <Navbar menuOpen={menuOpen} setMenuOpen={setMenuOpen} setUploadOpen={setUploadOpen} darkMode={darkMode} setDarkMode={toggleTheme} />
             <Routes>
               <Route path='/' exact element={<Dashboard setSignInOpen={setSignInOpen} />} />
+              <Route path='new' exact element={<NewContent />} />
               <Route path='/search' exact element={<Search />} />
               <Route path='/favourites' exact element={<Favourites />} />
               <Route path='/profile' exact element={<Profile setUploadOpen={setUploadOpen} setAddEpisodeOpen={setAddEpisodeOpen} setSelectedPodcastId={setSelectedPodcastId} />} />

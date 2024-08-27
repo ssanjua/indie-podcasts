@@ -13,7 +13,9 @@ const {
   getPodcasts, 
   random, 
   search, 
-  mostpopular 
+  mostpopular,
+  latestPodcast, 
+  latestEpisodes,
 } = require("../controllers/podcasts.js");
 
 const router = express.Router();
@@ -46,5 +48,7 @@ router.get("/random", random)
 router.get("/tags", getByTag)
 router.get("/category", getByCategory)
 router.get("/search", search)
+router.get("/latest", latestPodcast)
+router.get("/episodes/latest", latestEpisodes)
 
 module.exports = router;
