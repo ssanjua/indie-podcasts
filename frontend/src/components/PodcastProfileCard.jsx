@@ -34,7 +34,7 @@ const Card = styled.div`
   text-decoration: none;
   background-color: ${({ theme }) => theme.card};
   max-width: 220px;
-  height: 300px;
+  height: 420px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -57,7 +57,7 @@ const Top = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 150px;
+  height: 240px;
   position: relative;
 `;
 
@@ -87,7 +87,7 @@ const Description = styled.div`
 const CardImage = styled.img`
   object-fit: cover;
   width: 220px;
-  height: 140px;
+  height: 220px;
   border-radius: 6px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
   &:hover{

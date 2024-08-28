@@ -35,7 +35,7 @@ const Card = styled(Link)`
   text-decoration: none;
   background-color: ${({ theme }) => theme.card};
   max-width: 220px;
-  height: 280px;
+  height: 340px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -59,7 +59,7 @@ const Top = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 150px;
+  height: 220px;
   position: relative;
 `;
 
@@ -89,7 +89,7 @@ const Description = styled.div`
 const CardImage = styled.img`
   object-fit: cover;
   width: 220px;
-  height: 140px;
+  height: 220px;
   border-radius: 6px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
   &:hover{
@@ -213,7 +213,6 @@ export const PodcastCard = ({ podcast, user }) => {
                 <CreatorName>
                   {podcast.creator.name}
                 </CreatorName>
-
               </div>
               <Views>• {podcast.views} vistas</Views>
             </CreatorInfo>

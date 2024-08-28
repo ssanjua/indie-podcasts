@@ -20,7 +20,6 @@ import VideoPlayer from "./components/VideoPlayer.jsx"
 import PodcastDetails from "./pages/PodcastDetails.jsx"
 import { closeSignin } from "./redux/setSigninSlice.jsx"
 import AddEpisode from "./components/AddEpisode.jsx"
-import NewContent from "./pages/NewContent.jsx"
 
 const Frame = styled.div`
   display: flex;
@@ -102,7 +101,6 @@ function App() {
             <Navbar menuOpen={menuOpen} setMenuOpen={setMenuOpen} setUploadOpen={setUploadOpen} darkMode={darkMode} setDarkMode={toggleTheme} />
             <Routes>
               <Route path='/' exact element={<Dashboard setSignInOpen={setSignInOpen} />} />
-              <Route path='new' exact element={<NewContent />} />
               <Route path='/search' exact element={<Search />} />
               <Route path='/favourites' exact element={<Favourites />} />
               <Route path='/profile' exact element={<Profile setUploadOpen={setUploadOpen} setAddEpisodeOpen={setAddEpisodeOpen} setSelectedPodcastId={setSelectedPodcastId} />} />

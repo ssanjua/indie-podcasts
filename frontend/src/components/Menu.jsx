@@ -13,7 +13,6 @@ import ExitToAppRoundedIcon from '@mui/icons-material/ExitToAppRounded'
 import CloseRounded from '@mui/icons-material/CloseRounded'
 import LogoIcon from '/logo.webp'
 import { openSignin } from '../redux/setSigninSlice'
-import AnnouncementRoundedIcon from '@mui/icons-material/AnnouncementRounded';
 
 
 const MenuContainer = styled.div`
@@ -89,7 +88,7 @@ const Logo = styled.div`
   justify-content: center;
   gap: 6px;
   font-weight: bold;
-  font-size: 16px;
+  font-size: 14px;
   margin: 16px 0px;
   font-family: 'Press Start 2P', system-ui;
   text-shadow: 1px 2px 0px ${({ theme }) => theme.text_secondary};
@@ -154,12 +153,6 @@ const Menu = ({ setMenuOpen, setUploadOpen, setAddEpisodeOpen }) => {
             </Elements>
           </Link >
       }
-      <Link to='/new' style={{ textDecoration: "none", color: "inherit", width: '100%' }}>
-        <Elements>
-          <AnnouncementRoundedIcon />
-          <NavText>Novedades</NavText>
-        </Elements>
-      </Link>
       <HR />
       {currentUser && (
         <Link

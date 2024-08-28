@@ -42,7 +42,7 @@ const FilterContainer = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   ${({ box, theme }) => box && `
-  background-color: ${theme.bg};
+  // background-color: ${theme.bg};
     border-radius: 10px;
     padding: 20px 30px;
   `}
@@ -207,6 +207,7 @@ const Profile = ({ setUploadOpen, setAddEpisodeOpen }) => {
         </Loader>
         :
         <>
+
           <UserDetails>
             <ProfileAvatar>
               <Avatar sx={{ height: 125, width: 125, fontSize: '24px' }} src={user?.img}>{user?.name.charAt(0).toUpperCase()}</Avatar>
@@ -216,20 +217,6 @@ const Profile = ({ setUploadOpen, setAddEpisodeOpen }) => {
               <Profile_email>Email: {user?.email}</Profile_email>
             </ProfileContainer>
           </UserDetails>
-          {currentUser && user?.podcasts.length > 0 &&
-            <FilterContainer box={true}>
-              <Topic>Tus podcasts</Topic>
-              <Podcasts>
-                {user?.podcasts.map((podcast) => (
-                  <PodcastProfileCard
-                    podcast={podcast}
-                    key={podcast._id}
-                    onDelete={handleDeletePodcast}
-                  />
-                ))}
-              </Podcasts>
-            </FilterContainer>
-          }
           <AddContentContainer>
             <UploadContainer box={true} >
               <SubTopic>Nuevo Podcast</SubTopic>
@@ -268,6 +255,21 @@ const Profile = ({ setUploadOpen, setAddEpisodeOpen }) => {
               </Container>
             </UploadContainer>
           </AddContentContainer>
+          {currentUser && user?.podcasts.length > 0 &&
+            <FilterContainer box={true}>
+              <Topic>Tus podcasts</Topic>
+              <Podcasts>
+                {user?.podcasts.map((podcast) => (
+                  <PodcastProfileCard
+                    podcast={podcast}
+                    key={podcast._id}
+                    onDelete={handleDeletePodcast}
+                  />
+                ))}
+              </Podcasts>
+            </FilterContainer>
+          }
+
         </>
       }
     </ProfileMain>

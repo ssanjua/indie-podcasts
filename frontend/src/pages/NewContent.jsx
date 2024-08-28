@@ -2,9 +2,8 @@ import { useEffect, useState } from 'react'
 import styled from "styled-components"
 import { CircularProgress } from '@mui/material'
 import { useCallback } from 'react'
-import { getLatestPodcasts, getLatestEpisodes } from '../api'
+import { getLatestPodcasts } from '../api'
 import { PodcastCard } from '../components/PodcastCard'
-import EpisodeDashboardCard from '../components/EpisodeDashboardCard'
 
 const MainContent = styled.div`
   padding: 20px 30px;
@@ -66,7 +65,6 @@ const Topic = styled.div`
 const NewContent = () => {
   const [ loading, setLoading ] = useState(false)
   const [ newestPodcast, setNewestPodcast ] = useState([])
-  const [ newestEpisodes, setNewestEpisodes ] = useState([])
 
   const getNewestPodcast = useCallback(async () => {
     setLoading(true)
@@ -79,23 +77,10 @@ const NewContent = () => {
     }
   }, [])
 
-  const getNewestEpisodes = useCallback(async () => {
-    setLoading(true)
-    try {
-      const res = await getLatestEpisodes()
-      setLoading(false)
-      setNewestEpisodes(res.data)
-    } catch (error) {
-      console.log(error)
-    }
-  }, [])
-
   useEffect(() => {
     getNewestPodcast()
-    getNewestEpisodes()
-  }, [getNewestPodcast, getNewestEpisodes])
 
-  
+  }, [getNewestPodcast])
 
   return (
     <MainContent>
@@ -108,17 +93,9 @@ const NewContent = () => {
           <FilterContainer>
             <Topic>Nuevos podcasts</Topic>
             <Podcasts>
-              {newestPodcast.slice(0, 4).map((podcast) => (
+              {newestPodcast.slice(0, 8).map((podcast) => (
                 <PodcastCard podcast={podcast} key={podcast.name} />
               ))}
-            </Podcasts>
-          </FilterContainer>
-          <FilterContainer>
-            <Topic>Nuevos episodios</Topic>
-            <Podcasts>
-              {newestEpisodes.slice(0, 4).map((episode) => (
-                <EpisodeDashboardCard key={episode._id} episode={episode} />
-            ))}
             </Podcasts>
           </FilterContainer>
         </>

@@ -8,6 +8,7 @@ import { PodcastCard } from '../components/PodcastCard.jsx'
 import { getUsers } from '../api/index'
 import { Link } from 'react-router-dom'
 import { CircularProgress } from '@mui/material'
+import { getLatestPodcasts } from '../api'
 
 const DashboardMain = styled.div`
   padding: 20px 30px;
@@ -30,9 +31,8 @@ const FilterContainer = styled.div`
   border-radius: 10px;
   padding: 20px 30px;
   `}
-  background-color: ${({ theme }) => theme.bg};
+  // background-color: ${({ theme }) => theme.bg};
   border-radius: 10px;
-  padding: 20px 30px;
 `;
 
 const Topic = styled.div`
@@ -40,6 +40,7 @@ const Topic = styled.div`
   font-size: 24px;
   font-weight: 540;
   display: flex;
+  margin-left: 10px;
   justify-content: space-between;
   align-items: center;
   @maedia (max-width: 768px){
@@ -81,13 +82,14 @@ const Loader = styled.div`
 `;
 
 const Dashboard = ({ setSignInOpen }) => {
-  const [mostPopular, setMostPopular] = useState([])
-  const [user, setUser] = useState()
-  const [comedy, setComedy] = useState([])
-  const [news, setNews] = useState([])
-  const [sports, setSports] = useState([])
-  const [crime, setCrime] = useState([])
-  const [loading, setLoading] = useState(false)
+  const [ mostPopular, setMostPopular ] = useState([])
+  const [ user, setUser ] = useState()
+  const [ comedy, setComedy ] = useState([])
+  const [ news, setNews ] = useState([])
+  const [ sports, setSports ] = useState([])
+  const [ crime, setCrime ] = useState([])
+  const [ loading, setLoading ] = useState(false)
+  const [ newestPodcast, setNewestPodcast ] = useState([])
 
   //user
   const { currentUser } = useSelector(state => state.user)
@@ -134,9 +136,21 @@ const Dashboard = ({ setSignInOpen }) => {
     setLoading(false);
   }, [currentUser, getUser, getPopularPodcast, getPodcastsByCategory])
 
+  const getNewestPodcast = useCallback(async () => {
+    setLoading(true)
+    try {
+      const res = await getLatestPodcasts()
+      setLoading(false)
+      setNewestPodcast(res.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }, [])
+
   useEffect(() => {
-    getAllData();
-  }, [getAllData])
+    getAllData()
+    getNewestPodcast()
+  }, [getAllData, getNewestPodcast])
 
   return (
     <DashboardMain>
@@ -147,19 +161,27 @@ const Dashboard = ({ setSignInOpen }) => {
         :
         <>
           <FilterContainer>
-            <Topic>🔥 Populares 
+            <Topic>Populares 
               <Link to={`/showpodcasts/mostpopular`} style={{ textDecoration: "none" }}>
                 <Span>más</Span>
               </Link>
             </Topic>
             <Podcasts>
-              {mostPopular.slice(0, 12).map((podcast) => (
+              {mostPopular.slice(0, 10).map((podcast) => (
                 <PodcastCard podcast={podcast} key={podcast} user={user} setSignInOpen={setSignInOpen} />
               ))}
             </Podcasts>
           </FilterContainer>
           <FilterContainer>
-            <Topic>🤣 Variedad
+            <Topic>Nuevos podcasts</Topic>
+            <Podcasts>
+              {newestPodcast.slice(0, 8).map((podcast) => (
+                <PodcastCard podcast={podcast} key={podcast.name} />
+              ))}
+            </Podcasts>
+          </FilterContainer>
+          <FilterContainer>
+            <Topic>Variedad
               <Link to={`/showpodcasts/variedad`} style={{ textDecoration: "none" }}>
                 <Span>más</Span>
               </Link>
@@ -172,7 +194,7 @@ const Dashboard = ({ setSignInOpen }) => {
           </FilterContainer>
           <FilterContainer>
             <Link to={`/showpodcasts/noticias`} style={{ textDecoration: "none" }}>
-              <Topic>📰 Noticias
+              <Topic>Noticias
                 <Span>más</Span>
               </Topic>
             </Link>
@@ -184,7 +206,7 @@ const Dashboard = ({ setSignInOpen }) => {
           </FilterContainer>
           <FilterContainer>
             <Link to={`/showpodcasts/tecnologia`} style={{ textDecoration: "none" }}>
-              <Topic>🤖 Tecnología
+              <Topic>Tecnología
                 <Span>más</Span>
               </Topic>
             </Link>
@@ -196,7 +218,7 @@ const Dashboard = ({ setSignInOpen }) => {
           </FilterContainer>
           <FilterContainer>
             <Link to={`/showpodcasts/deportes`} style={{ textDecoration: "none" }}>
-              <Topic>⚽ Deportes
+              <Topic>Deportes
                 <Span>más</Span>
               </Topic>
             </Link>
