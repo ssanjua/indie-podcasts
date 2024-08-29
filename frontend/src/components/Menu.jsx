@@ -30,7 +30,7 @@ const MenuContainer = styled.div`
     position: fixed;
     z-index: 1000;
     width: 100%;
-    max-width: 250px;
+    max-width: 300px;
     left: ${({ setMenuOpen }) => (setMenuOpen ? "0" : "-100%")};
     transition: 0.3s ease-in-out;
   }
@@ -71,7 +71,7 @@ const Flex = styled.div`
   display: flex;
   align-items: center;
   padding: 0px 16px;
-  width: 86%;
+  width: 95%;
 `;
 
 const Close = styled.div`
@@ -197,8 +197,6 @@ export default Menu
 
 Menu.propTypes = {
   setMenuOpen: PropTypes.func.isRequired,
-  darkMode: PropTypes.bool.isRequired,
-  setDarkMode: PropTypes.func.isRequired,
   setUploadOpen: PropTypes.func.isRequired,
   setAddEpisodeOpen: PropTypes.func.isRequired,
 }

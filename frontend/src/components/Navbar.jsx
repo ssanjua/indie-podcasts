@@ -58,6 +58,7 @@ const ButtonDiv = styled.div`
 const Welcome = styled.div`
   font-size: 18px;
   font-weight: 600;
+  color: ${({ theme }) => theme.text_secondary};
   @media (max-width: 768px) {
     font-size: 16px;
   }
@@ -124,7 +125,7 @@ const Navbar = ({ menuOpen, setMenuOpen, setUploadOpen, darkMode, setDarkMode })
       {
         currentUser ?
           <Welcome>
-            Hola, {currentUser.name}
+            Hola, {currentUser.name}!
           </Welcome>
           :
           <>&nbsp;</>

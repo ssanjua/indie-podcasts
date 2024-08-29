@@ -102,15 +102,14 @@ const ButtonContainer = styled.div`
   color: ${({ theme }) => theme.primary};
   border: 1px solid ${({ theme }) => theme.text_secondary};
   width: 100%;
-  border-radius: 4px;
+  border-radius: 22px;
   max-width: 70px;
-  padding: 10px 10px;
+  padding: 10px 30px;
   text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color:  ${({ theme }) => theme.bg};
-  gap: 6px;
   box-shadow: 3px 3px 0px 0px ${({ theme }) => theme.primary};
   &:hover{
     background-color: ${({ theme }) => theme.text_secondary + 50};
@@ -125,36 +124,30 @@ const Elements = styled.div`
   align-items: center;
   gap: 10px;
   cursor: pointer;
-  color:  ${({ theme }) => theme.text_secondary};
-  width: 100%;
+  color: ${({ theme }) => theme.text_primary};
   }
 `;
 
 const UploadContainer = styled.div`
   display: flex;
-  width: 50%;
+  // width: 50%;
   gap: 1rem;
   flex-direction: column;
   justify-content: center;
   ${({ box, theme }) => box && `
-  background-color: ${theme.bgMedium};
+  // background-color: ${theme.bgMedium};
     border-radius: 10px;
-    padding: 20px 30px;
   `}
-`;
-
-const SubTopic = styled.div`
-  color: ${({ theme }) => theme.text_primary};
-  font-size: 18px;
-  font-weight: 400;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 const AddContentContainer = styled.div`
   display: flex;
-  gap: 12px;
+  gap: 16px;
+  margin-top: 1rem;
+  padding-left:3rem;
+  @media (max-width: 768px) {
+    padding-left:0rem;
+  }
 `;
 
 const Loader = styled.div`
@@ -164,6 +157,7 @@ const Loader = styled.div`
   height: 100%;
   width: 100%;
 `;
+
 
 const Profile = ({ setUploadOpen, setAddEpisodeOpen }) => {
   const [user, setUser] = useState()
@@ -219,7 +213,6 @@ const Profile = ({ setUploadOpen, setAddEpisodeOpen }) => {
           </UserDetails>
           <AddContentContainer>
             <UploadContainer box={true} >
-              <SubTopic>Nuevo Podcast</SubTopic>
               <Container>
                 <ButtonContainer>
                   {currentUser && (
@@ -229,7 +222,7 @@ const Profile = ({ setUploadOpen, setAddEpisodeOpen }) => {
                     >
                       <Elements>
                         <UploadRoundedIcon />
-                        Subir
+                        Nuevo Podcast
                       </Elements>
                     </Link>
                   )}
@@ -237,7 +230,6 @@ const Profile = ({ setUploadOpen, setAddEpisodeOpen }) => {
               </Container>
             </UploadContainer>
             <UploadContainer box={true} >
-              <SubTopic>Nuevo Epidosio</SubTopic>
               <Container>
                 <ButtonContainer>
                   {currentUser && (
@@ -247,7 +239,7 @@ const Profile = ({ setUploadOpen, setAddEpisodeOpen }) => {
                     >
                       <Elements>
                         <UploadRoundedIcon />
-                        Subir
+                        Nuevo Episodio
                       </Elements>
                     </Link>
                   )}

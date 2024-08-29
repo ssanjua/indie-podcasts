@@ -33,7 +33,7 @@ const Podcasts = styled.div`
 `;
 
 const Container = styled.div`
-  background-color: ${({ theme }) => theme.bg};
+  // background-color: ${({ theme }) => theme.bg};
   padding: 20px;
   border-radius: 6px;
   min-height: 400px;
@@ -128,7 +128,7 @@ const DisplayPodcasts = () => {
           <Podcasts>
             {podcasts.length === 0 && <DisplayNo>No hay podcasts</DisplayNo>}
             {podcasts.map((podcast) => (
-              <PodcastCard key={podcast} podcast={podcast} />
+              <PodcastCard key={podcast._id} podcast={podcast} />
             ))}
           </Podcasts>
         }

@@ -6,8 +6,6 @@ import { useState } from 'react';
 import { DialogPopUp } from './DialogPopUp'
 import { IconButton } from '@mui/material'
 import { Link } from 'react-router-dom'
-import HeadphonesIcon from '@mui/icons-material/Headphones'
-import OndemandVideoRoundedIcon from '@mui/icons-material/OndemandVideoRounded'
 import { deletePodcast } from '../api'
 import EditRoundedIcon from '@mui/icons-material/EditRounded'
 
@@ -160,11 +158,11 @@ const GoToPodcast = styled(Link)`
   font-size: 12px;
   cursor: pointer;
   text-decoration: none;
-  color: ${({ theme }) => theme.primaryYellow};
+  color: ${({ theme }) => theme.text_primary};
   border: 1px solid ${({ theme }) => theme.text_secondary};
   width: 100%;
   max-width: 70px;
-  border-radius: 4px;
+  border-radius: 16px;
   padding: 8px 10px;
   text-align: center;
   display: flex;
@@ -250,13 +248,6 @@ const PodcastProfileCard = ({ podcast, onDelete }) => {
             </IconContainer>
           </EditContainer>
         </div>
-        <PlayIcon>
-          {podcast?.type === 'video' ?
-            <OndemandVideoRoundedIcon style={{ width: '28px', height: '28px' }} />
-            :
-            <HeadphonesIcon style={{ width: '28px', height: '28px' }} />
-          }
-        </PlayIcon>
       </Card>
       <DialogPopUp
         open={confirmOpen}

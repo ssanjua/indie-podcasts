@@ -37,7 +37,7 @@ router.delete("/episode/:id", verifyToken, deleteEpisode);
 router.post("/episode",verifyToken, addepisodes);
 
 //favorit/unfavorit podcast
-router.post("/favorit",verifyToken,favoritPodcast); 
+router.post("/favorit",verifyToken,favoritPodcast);
 
 //add view
 router.post("/addview/:id",addView); 
@@ -50,5 +50,9 @@ router.get("/category", getByCategory)
 router.get("/search", search)
 router.get("/latest", latestPodcast)
 router.get("/episodes/latest", latestEpisodes)
+
+//edit podcasts and episodes
+// router.put("/:id", verifyToken, updatePodcast)
+// router.put("/episode/:id", verifyToken, updateEpisode)
 
 module.exports = router;

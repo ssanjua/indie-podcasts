@@ -256,8 +256,8 @@ const AudioPlayer = ({ episode, podid, currenttime, index }) => {
       </Left>
       <Player>
         <Controls>
-          <IcoButton>
-            <SkipPreviousRounded onClick={() => goToPreviousPodcast()} />
+          <IcoButton onClick={() => goToPreviousPodcast()} >
+            <SkipPreviousRounded />
           </IcoButton>
           <Audio
             ref={audioRef}
@@ -268,8 +268,8 @@ const AudioPlayer = ({ episode, podid, currenttime, index }) => {
             onPlay={() => { audioRef.current.currentTime = currenttime }}
             src={episode?.file}
           />
-          <IcoButton>
-            <SkipNextRounded onClick={() => goToNextPodcast()} />
+          <IcoButton onClick={() => goToNextPodcast()} >
+            <SkipNextRounded />
           </IcoButton>
         </Controls>
       </Player>
@@ -285,7 +285,16 @@ export default AudioPlayer
 
 AudioPlayer.propTypes = {
   episode: PropTypes.object.isRequired,
-  podid: PropTypes.string.isRequired,
   currenttime: PropTypes.number.isRequired,
   index: PropTypes.number.isRequired,
+  podid: PropTypes.shape({
+    thumbnail: PropTypes.string.isRequired,
+    episodes: PropTypes.arrayOf(
+      PropTypes.shape({
+        file: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
+        desc: PropTypes.string.isRequired,
+      })
+    ).isRequired,
+  }).isRequired,
 }

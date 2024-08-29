@@ -118,7 +118,6 @@ const Search = () => {
     await searchPodcast(e.target.value)
       .then((res) => {
         setSearchedPodcasts(res.data)
-        console.log(res.data)
       })
       .catch((err) => {
         dispatch(
@@ -137,7 +136,7 @@ const Search = () => {
         <Search_whole>
           <SearchOutlinedIcon sx={{ "color": "inherit" }} />
           <input type='text' placeholder='Buscar podcast'
-            style={{  "font-size": "18px", "border": "none", "outline": "none", "width": "100%", "background": "inherit", "color": "inherit" }}
+            style={{  "fontSize": "18px", "border": "none", "outline": "none", "width": "100%", "background": "inherit", "color": "inherit" }}
             value={searched}
             onChange={(e) => handleChange(e)} />
         </Search_whole>

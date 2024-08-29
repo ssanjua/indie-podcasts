@@ -9,8 +9,6 @@ import { favoritePodcast } from '../api'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { openSignin } from '../redux/setSigninSlice'
-import HeadphonesIcon from '@mui/icons-material/Headphones'
-import OndemandVideoRoundedIcon from '@mui/icons-material/OndemandVideoRounded';
 
 
 const PlayIcon = styled.div`
@@ -129,10 +127,6 @@ const CreatorName = styled.div`
   color: ${({ theme }) => theme.text_secondary};
 `;
 
-// const TimePosted = styled.div`
-//   color: ${({ theme }) => theme.text_secondary};
-// `;
-
 const Views = styled.div`
   font-size:10px;
   color: ${({ theme }) => theme.text_secondary};
@@ -183,7 +177,7 @@ export const PodcastCard = ({ podcast, user }) => {
     <Card to={`/podcast/${podcast._id}`}>
       <div>
         <Top>
-          <Link onClick={() => {
+          <div onClick={() => {
             if (!currentUser) {
               dispatch(
                 openSignin()
@@ -199,7 +193,7 @@ export const PodcastCard = ({ podcast, user }) => {
                 <FavoriteIcon style={{ width: '16px', height: '16px' }}></FavoriteIcon>
               }
             </Favorite>
-          </Link>
+          </div>
           <CardImage src={podcast.thumbnail} />
         </Top>
         <CardInformation>
@@ -219,13 +213,6 @@ export const PodcastCard = ({ podcast, user }) => {
           </MainInfo>
         </CardInformation>
       </div>
-      <PlayIcon>
-        {podcast?.type === 'video' ?
-          <OndemandVideoRoundedIcon style={{ width: '28px', height: '28px' }} />
-          :
-          <HeadphonesIcon style={{ width: '28px', height: '28px' }} />
-        }
-      </PlayIcon>
     </Card>
   );
 }
@@ -247,6 +234,5 @@ PodcastCard.propTypes = {
     favorits: PropTypes.arrayOf(PropTypes.shape({
       _id: PropTypes.string.isRequired
     }))
-  }).isRequired,
-  setSignInOpen: PropTypes.func.isRequired
+  }),
 }

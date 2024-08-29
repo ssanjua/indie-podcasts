@@ -331,8 +331,8 @@ const PodcastDetails = () => {
               <Title>{podcast?.name}</Title>
               <Description>{podcast?.desc}</Description>
               <Tags>
-                {podcast?.tags.map((tag) => (
-                  <Tag key={podcast._id}>{tag}</Tag>
+                {podcast?.tags.map((tag, index) => (
+                  <Tag key={`${podcast._id}-${index}`}>{tag}</Tag>
                 ))}
               </Tags>
               <CreatorContainer>

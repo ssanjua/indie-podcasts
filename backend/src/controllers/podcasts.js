@@ -214,7 +214,7 @@ exports.random = async (req, res, next) => {
 
 exports.mostpopular = async (req, res, next) => {
   try {
-    const podcast = await Podcasts.find().sort({ views: -1 }).populate("creator", "name img").populate("episodes");
+    const podcast = await Podcasts.find().sort({ views: -1 }).limit(8).populate("creator", "name img").populate("episodes");
     res.status(200).json(podcast);
   } catch (err) {
     next(err);
@@ -271,6 +271,34 @@ exports.search = async (req, res, next) => {
       name: { $regex: query, $options: "i" },
     }).populate("creator", "name img").populate("episodes").limit(40);
     res.status(200).json(podcast);
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.updatePodcast = async (req, res, next) => {
+  try {
+    const podcast = await Podcasts.findById(req.params.id);
+
+    if (!podcast) {
+      return next(createError(404, "Podcast not found"));
+    }
+
+    if (req.user.id !== podcast.creator.toString()) {
+      return next(createError(403, "You don't have permission to edit this podcast"));
+    }
+
+    // update podcast
+    podcast.name = req.body.name || podcast.name;
+    podcast.desc = req.body.desc || podcast.desc;
+    podcast.thumbnail = req.body.thumbnail || podcast.thumbnail;
+    podcast.tags = req.body.tags || podcast.tags;
+    podcast.type = req.body.type || podcast.type;
+    podcast.category = req.body.category || podcast.category;
+
+    const updatedPodcast = await podcast.save();
+
+    res.status(200).json(updatedPodcast);
   } catch (err) {
     next(err);
   }

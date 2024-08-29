@@ -52,6 +52,10 @@ const Span = styled.span`
   color: ${({ theme }) => theme.text_secondary};
   font-size: 12px;
   font-weight: 400;
+  border: 1px solid ${({ theme }) => theme.text_secondary};
+  padding: 0.5rem;
+  box-shadow: 3px 3px 0px 0px ${({ theme }) => theme.text_primary};
+  border-radius: 10px;
   cursor: pointer;
   @media (max-width: 768px){
     font-size: 14px;
@@ -168,7 +172,7 @@ const Dashboard = ({ setSignInOpen }) => {
             </Topic>
             <Podcasts>
               {mostPopular.slice(0, 10).map((podcast) => (
-                <PodcastCard podcast={podcast} key={podcast} user={user} setSignInOpen={setSignInOpen} />
+                <PodcastCard podcast={podcast} key={podcast._id} user={user} setSignInOpen={setSignInOpen} />
               ))}
             </Podcasts>
           </FilterContainer>
@@ -188,7 +192,7 @@ const Dashboard = ({ setSignInOpen }) => {
             </Topic>
             <Podcasts>
               {comedy.slice(0, 4).map((podcast) => (
-                <PodcastCard podcast={podcast} key={podcast} user={user} setSignInOpen={setSignInOpen} />
+                <PodcastCard podcast={podcast} key={podcast._id} user={user} setSignInOpen={setSignInOpen} />
               ))}
             </Podcasts>
           </FilterContainer>
@@ -200,7 +204,7 @@ const Dashboard = ({ setSignInOpen }) => {
             </Link>
             <Podcasts>
               {news.slice(0, 4).map((podcast) => (
-                <PodcastCard podcast={podcast} key={podcast} user={user} setSignInOpen={setSignInOpen} />
+                <PodcastCard podcast={podcast} key={podcast._id} user={user} setSignInOpen={setSignInOpen} />
               ))}
             </Podcasts>
           </FilterContainer>
@@ -212,7 +216,7 @@ const Dashboard = ({ setSignInOpen }) => {
             </Link>
             <Podcasts>
               {crime.slice(0, 4).map((podcast) => (
-                <PodcastCard podcast={podcast} key={podcast} user={user} setSignInOpen={setSignInOpen} />
+                <PodcastCard podcast={podcast} key={podcast._id} user={user} setSignInOpen={setSignInOpen} />
               ))}
             </Podcasts>
           </FilterContainer>
@@ -224,7 +228,7 @@ const Dashboard = ({ setSignInOpen }) => {
             </Link>
             <Podcasts>
               {sports.slice(0, 4).map((podcast) => (
-                <PodcastCard podcast={podcast} key={podcast} user={user} setSignInOpen={setSignInOpen} />
+                <PodcastCard podcast={podcast} key={podcast._id} user={user} setSignInOpen={setSignInOpen} />
               ))}
             </Podcasts>
           </FilterContainer>
@@ -237,5 +241,5 @@ const Dashboard = ({ setSignInOpen }) => {
 export default Dashboard
 
 Dashboard.propTypes = {
-  setSignInOpen: PropTypes.func,
+  setSignInOpen: PropTypes.bool,
 }

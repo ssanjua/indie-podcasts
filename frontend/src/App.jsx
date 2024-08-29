@@ -39,18 +39,19 @@ const Podcasts = styled.div`
 
 function App() {
 
-  const [ darkMode, setDarkMode ] = useState(true)
+  const [darkMode, setDarkMode] = useState(true)
   const { open, message, severity } = useSelector((state) => state.snackbar)
   const { openplayer, type, episode, podid, currenttime, index } = useSelector((state) => state.audioplayer)
   const { opensi } = useSelector((state) => state.signin)
-  const [ SignUpOpen, setSignUpOpen ] = useState(false)
-  const [ setSignInOpen ] = useState(false)
-  const [ menuOpen, setMenuOpen ] = useState(true)
-  const [ uploadOpen, setUploadOpen ] = useState(false)
-  const [ addEpisodeOpen, setAddEpisodeOpen ] = useState(false);
-  const [ selectedPodcastId, setSelectedPodcastId ] = useState(null);
+  const [SignUpOpen, setSignUpOpen] = useState(false)
+  const [setSignInOpen] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(true)
+  const [uploadOpen, setUploadOpen] = useState(false)
+  const [addEpisodeOpen, setAddEpisodeOpen] = useState(false);
+  const [selectedPodcastId, setSelectedPodcastId] = useState(null);
 
   const dispatch = useDispatch()
+  
 
   useEffect(() => {
     // Leer el tema guardado en localStorage
@@ -83,10 +84,7 @@ function App() {
     dispatch(closeSignin())
   }, [dispatch])
 
-
-
   return (
-
     <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
       <BrowserRouter>
         {opensi && <Signin setSignInOpen={setSignInOpen} setSignUpOpen={setSignUpOpen} />}

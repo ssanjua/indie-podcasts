@@ -305,7 +305,6 @@ const SignUp = ({ setSignUpOpen }) => {
         email: user.data.email,
         img: user.data.picture,
       }).then((res) => {
-        console.log(res)
         if (res.status === 200) {
           dispatch(loginSuccess(res.data))
           dispatch(closeSignin())
