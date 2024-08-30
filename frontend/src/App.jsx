@@ -2,7 +2,7 @@ import { ThemeProvider } from "styled-components"
 import { useState, useEffect } from "react"
 import { darkTheme, lightTheme } from './utils/themes.js'
 import Signup from '../src/components/Signup.jsx'
-import Signin from '../src/components/SignIn.jsx'
+import Signin from '../src/components/Signin.jsx'
 import Navbar from '../src/components/Navbar.jsx'
 import Menu from '../src/components/Menu.jsx'
 import Dashboard from '../src/pages/Dashboard.jsx'
