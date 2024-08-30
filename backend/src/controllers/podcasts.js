@@ -4,8 +4,8 @@ const { createError } = require("../error.js");
 const Podcasts = require("../models/Podcasts.js");
 const Episodes = require("../models/Episodes.js");
 
+
 exports.createPodcast = async (req, res, next) => {
-  // console.log("Received data from frontend:", req.body)
   try {
     const user = await User.findById(req.user.id);
 
@@ -16,8 +16,7 @@ exports.createPodcast = async (req, res, next) => {
         const savedEpisode = await episode.save();
         episodeList.push(savedEpisode._id);
       } catch (err) {
-        // console.error("Error saving episode:", err);
-        throw err;  // Rethrow the error to handle it in the outer catch
+        throw err; 
       }
     }));
 
@@ -35,7 +34,6 @@ exports.createPodcast = async (req, res, next) => {
       }
     );
     const savedPodcast = await podcast.save();
-    // console.log("Request Body:", req.body)
 
     //save the podcast to the user
     await User.findByIdAndUpdate(user.id, {
@@ -51,7 +49,7 @@ exports.createPodcast = async (req, res, next) => {
 
 exports.addepisodes = async (req, res, next) => {
   try {
-    console.log("Request Body:", req.body)
+    // console.log("Request Body:", req.body)
     const user = await User.findById(req.user.id);
     console.log("User Found:", user)
 
@@ -59,15 +57,11 @@ exports.addepisodes = async (req, res, next) => {
 
       const episode = new Episodes(
         { creator: user.id, ...item });
-      console.log("Episode to be saved:", episode)
 
       const savedEpisode = await episode.save();
-      console.log("Saved Episode:", savedEpisode)
+      // console.log("Saved Episode:", savedEpisode)
 
-      console.log("podId:", item.podId)
-
-      // Convert `podId` to ObjectId
-      // const podcastId = mongoose.Types.ObjectId(item.podId);
+      // console.log("podId:", item.podId)
 
       // Try to update the podcast
       const updatedPodcast = await Podcasts.findByIdAndUpdate(
@@ -75,8 +69,6 @@ exports.addepisodes = async (req, res, next) => {
         { $push: { episodes: savedEpisode.id } },
         { new: true }
       )
-
-      console.log("Updated Podcast:", updatedPodcast)
     }));
 
     res.status(201).json({ message: "Episode added successfully" });
@@ -257,7 +249,7 @@ exports.getByCategory = async (req, res, next) => {
     const podcast = await Podcasts.find({
 
       category: { $regex: query, $options: "i" },
-    }).populate("creator", "name img").populate("episodes");
+    }).populate("creator", "name img").limit(4).populate("episodes");
     res.status(200).json(podcast);
   } catch (err) {
     next(err);
@@ -269,7 +261,7 @@ exports.search = async (req, res, next) => {
   try {
     const podcast = await Podcasts.find({
       name: { $regex: query, $options: "i" },
-    }).populate("creator", "name img").populate("episodes").limit(40);
+    }).populate("creator", "name img").populate("episodes").limit(10);
     res.status(200).json(podcast);
   } catch (err) {
     next(err);
@@ -303,3 +295,4 @@ exports.updatePodcast = async (req, res, next) => {
     next(err);
   }
 };
+

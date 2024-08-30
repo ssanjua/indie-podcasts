@@ -50,9 +50,7 @@ const Span = styled.span`
   color: ${({ theme }) => theme.text_secondary};
   font-size: 12px;
   font-weight: 400;
-  border: 1px solid ${({ theme }) => theme.text_secondary};
   padding: 0.5rem;
-  box-shadow: 3px 3px 0px 0px ${({ theme }) => theme.text_primary};
   border-radius: 10px;
   cursor: pointer;
   @media (max-width: 768px){
@@ -65,15 +63,19 @@ const Span = styled.span`
 `;
 
 const Podcasts = styled.div`
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 14px;
   padding: 18px 6px;
-  //center the items if only one item present
-  @media (max-width: 550px){
-    justify-content: center;
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (max-width: 550px) {
+    grid-template-columns: (2, 1fr);
   }
 `;
+
+
 
 const Loader = styled.div`
   display: flex;
@@ -134,7 +136,7 @@ const Dashboard = ({ setSignInOpen }) => {
       getPopularPodcast(),
       getPodcastsByCategory("variedad", setComedy),
       getPodcastsByCategory("noticias", setNews),
-      getPodcastsByCategory("deportes", setSports),
+      getPodcastsByCategory("música", setSports),
       getPodcastsByCategory("tecnologia", setCrime)
     ])
   } catch (error) {
@@ -227,8 +229,8 @@ const Dashboard = ({ setSignInOpen }) => {
             </Podcasts>
           </FilterContainer>
           <FilterContainer>
-            <Link to={`/showpodcasts/deportes`} style={{ textDecoration: "none" }}>
-              <Topic>Deportes
+            <Link to={`/showpodcasts/música`} style={{ textDecoration: "none" }}>
+              <Topic>Música
                 <Span>más</Span>
               </Topic>
             </Link>

@@ -2,7 +2,7 @@ import { ThemeProvider } from "styled-components"
 import { useState, useEffect } from "react"
 import { darkTheme, lightTheme } from './utils/themes.js'
 import Signup from '../src/components/Signup.jsx'
-import Signin from '../src/components/Signin.jsx'
+import Signin from '../src/components/SignIn.jsx'
 import Navbar from '../src/components/Navbar.jsx'
 import Menu from '../src/components/Menu.jsx'
 import Dashboard from '../src/pages/Dashboard.jsx'
@@ -51,7 +51,7 @@ function App() {
   const [selectedPodcastId, setSelectedPodcastId] = useState(null);
 
   const dispatch = useDispatch()
-  
+
 
   useEffect(() => {
     // Leer el tema guardado en localStorage
@@ -84,6 +84,18 @@ function App() {
     dispatch(closeSignin())
   }, [dispatch])
 
+  const defaultEpisode = {
+    name: "Bienvenid@",
+    creator: { name: "Indie Podcasts", img: "./assets/logo.webp" },
+    file: "",
+  };
+
+  const defaultPodid = {
+    name: "Podcast de ejemplo",
+    thumbnail: "./logo.webp",
+    episodes: [defaultEpisode],
+  };
+
   return (
     <ThemeProvider theme={darkMode ? darkTheme : lightTheme}>
       <BrowserRouter>
@@ -92,7 +104,7 @@ function App() {
         {uploadOpen && <Upload setUploadOpen={setUploadOpen} />}
         {addEpisodeOpen && <AddEpisode setAddEpisodeOpen={setAddEpisodeOpen} podcastId={selectedPodcastId} />}
         {openplayer && type === 'video' && <VideoPlayer episode={episode} podid={podid} currenttime={currenttime} index={index} />}
-        {openplayer && type === 'audio' && <AudioPlayer episode={episode} podid={podid} currenttime={currenttime} index={index} />}
+
         <Podcasts>
           {menuOpen && <Menu setMenuOpen={setMenuOpen} setUploadOpen={setUploadOpen} setAddEpisodeOpen={setAddEpisodeOpen} />}
           <Frame>
@@ -108,6 +120,11 @@ function App() {
           </Frame>
           {open && <ToastMessage open={open} message={message} severity={severity} />}
         </Podcasts>
+        <AudioPlayer
+          episode={episode || defaultEpisode}
+          podid={podid || defaultPodid }
+          currenttime={currenttime || 0}
+          index={index || 0} />
       </BrowserRouter>
     </ThemeProvider>
   )

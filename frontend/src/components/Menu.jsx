@@ -13,6 +13,7 @@ import ExitToAppRoundedIcon from '@mui/icons-material/ExitToAppRounded'
 import CloseRounded from '@mui/icons-material/CloseRounded'
 import LogoIcon from '/logo.webp'
 import { openSignin } from '../redux/setSigninSlice'
+import { useState } from 'react'
 
 
 const MenuContainer = styled.div`
@@ -81,7 +82,7 @@ const Close = styled.div`
   }
 `;
 
-const Logo = styled.div`
+const Logo = styled.h1`
   color: ${({ theme }) => theme.primary};
   display: flex;
   align-items: center;
@@ -98,15 +99,42 @@ const Image = styled.img`
   height: 35px;
 `;
 
-const Menu = ({ setMenuOpen, setUploadOpen, setAddEpisodeOpen }) => {
+const Text = styled.div`
+  font-size: 12px;
+  color: ${({ theme }) => theme.text_secondary};
+  padding: 10px;
+`;
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { currentUser } = useSelector(state => state.user);
+const Message = styled.div`
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: ${({ theme }) => theme.text_secondary};
+  border: 1px solid ${({ theme }) => theme.text_secondary};
+  padding: 8px;
+  border-radius: 10px;
+`;
+
+const Span = styled.span`
+  color: ${({ theme }) => theme.primary };
+  font-weight: bold;
+`;
+
+
+const Menu = ({ setMenuOpen, setUploadOpen, setAddEpisodeOpen }) => {
+  const [txtMessage, setTxtMessage] = useState(true)
+
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const { currentUser } = useSelector(state => state.user)
   const logoutUser = () => {
-    dispatch(logout());
-    navigate(`/`);
-  };
+    dispatch(logout())
+    navigate(`/`)
+  }
+
+  const handleCloseTxtMessage = () => {
+    setTxtMessage(false)
+  }
 
   return (
     <MenuContainer setMenuOpen={setMenuOpen}>
@@ -186,9 +214,18 @@ const Menu = ({ setMenuOpen, setUploadOpen, setAddEpisodeOpen }) => {
           :
           <Elements onClick={() => dispatch(openSignin())}>
             <ExitToAppRoundedIcon />
-            <NavText>Login</NavText>
+            <NavText>Subir Podcast</NavText>
           </Elements>
       }
+      <HR />
+      {txtMessage && <>
+        <Message>
+          <Text>
+            Gracias por estar aquí. <Span>El servidor puede demorar en responder unos 30 segundos </Span> debido a que actualmente corre una instancia de prueba. No te preocupes que cargara el contenido en breve.
+          </Text>
+          <CloseRounded onClick={handleCloseTxtMessage} style={{ cursor: "pointer", width: "20px", height: "20px" }} />
+        </Message>
+      </>}
     </MenuContainer >
   )
 }

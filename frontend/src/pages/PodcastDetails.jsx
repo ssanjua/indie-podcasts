@@ -221,8 +221,7 @@ const PodcastDetails = () => {
     await getUsers(token).then((res) => {
       setUser(res.data)
       setLoading(false)
-    }).then((err) => {
-      console.log(err)
+    }).catch((err) => {
       setLoading(false)
       dispatch(
         openSnackbar(
@@ -277,12 +276,20 @@ const PodcastDetails = () => {
       const res = await deletePodcast(podcast._id, token)
       if (res.status === 200) {
         navigate('/profile')
+        dispatch(
+          openSnackbar({
+            open: true,
+            message: "Podcast eliminado con éxito!",
+            severity: "success",
+          })
+        )
       }
     } catch (err) {
       console.log(err)
       dispatch(
         openSnackbar({
-          message: err.message,
+          open: true,
+          message: "Error eliminando el podcast",
           severity: "error",
         })
       )
@@ -309,8 +316,8 @@ const PodcastDetails = () => {
           <div style={{ display: 'flex', justifyContent: 'flex-end', width: '100%', gap: '6px' }}>
             {currentUser?._id === podcast?.creator?._id && (
               <>
-                <Delete >
-                  <DeleteForeverRoundedIcon onClick={openConfirmDialog} />
+                <Delete onClick={openConfirmDialog} >
+                  <DeleteForeverRoundedIcon />
                 </Delete>
                 <Edit>
                   <EditRoundedIcon />

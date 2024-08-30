@@ -20,6 +20,7 @@ const Container = styled.div`
   left: 0;
   padding: 10px 0px;
   transition: all 0.5s ease;
+  border-top: 1px solid ${({ theme }) => theme.text_secondary} !important;
   @media (max-width: 768px) {
     height: 60px;
     gap: 6px;
@@ -111,10 +112,16 @@ const Audio = styled.audio`
 `;
 
 const IcoButton = styled(IconButton)`
-  background-color: ${({ theme }) => theme.text_primary} !important;
+  border: 1px solid ${({ theme }) => theme.text_secondary} !important;
   color: ${({ theme }) => theme.bg} !important;
+  box-shadow: 3px 3px 0px 0px ${({ theme }) => theme.primary};
   font-size: 60px !important;
   padding: 10px !important;
+  color: ${({ theme }) => theme.text_primary} !important;
+  background-color: ${({ theme }) => theme.bgMedium} !important;
+  &:hover {
+    background-color: ${({ theme }) => theme.bg} !important;
+  }
   @media (max-width: 768px) {
       font-size: 20px !important;
       padding: 4px !important;
@@ -193,8 +200,6 @@ const AudioPlayer = ({ episode, podid, currenttime, index }) => {
   }
 
   const goToNextPodcast = () => {
-    //from the podid and index, get the next podcast
-    //dispatch the next podcast
     if (podid.episodes.length === index + 1) {
       dispatch(
         openSnackbar({
@@ -219,8 +224,6 @@ const AudioPlayer = ({ episode, podid, currenttime, index }) => {
   }
 
   const goToPreviousPodcast = () => {
-    //from the podid and index, get the next podcast
-    //dispatch the next podcast
     if (index === 0) {
       dispatch(
         openSnackbar({
@@ -244,10 +247,11 @@ const AudioPlayer = ({ episode, podid, currenttime, index }) => {
     }, 10)
   }
 
+
   return (
     <Container role="region" aria-label="Reproductor de audio">
       <Left>
-        <Image src={podid?.thumbnail} />
+        <Image src={podid?.thumbnail } />
         <PodData>
           <Title>{episode?.name}</Title>
           <Artist>{episode?.creator.name}</Artist>
@@ -296,7 +300,7 @@ AudioPlayer.propTypes = {
       PropTypes.shape({
         file: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
-        desc: PropTypes.string.isRequired,
+        desc: PropTypes.string,
       })
     ).isRequired,
   }).isRequired,

@@ -87,7 +87,7 @@ const Favourites = () => {
         <FavouritesContainer>
           {user?.favorits?.length === 0 && <DisplayNo>No tenés favoritos... todavía 😼</DisplayNo>}
           {user && user?.favorits.map((podcast) => (
-            <PodcastCard key={podcast} podcast={podcast} user={user} />
+            <PodcastCard key={podcast._id} podcast={podcast} user={user} />
           ))}
         </FavouritesContainer>
       }

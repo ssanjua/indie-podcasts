@@ -97,9 +97,10 @@ const EditDeleteContainer = styled.div`
 `;
 
 const PlayButton = styled.button`
-  background-color: ${({ theme }) => theme.primary};
-  box-shadow: 3px 3px 0px 0px ${({ theme }) => theme.text_secondary};
-  border: none;
+  background-color: ${({ theme }) => theme.bg};
+
+  box-shadow: 3px 3px 0px 0px ${({ theme }) => theme.primary};
+  border: 1px solid ${({ theme }) => theme.text_secondary} !important;
   border-radius: 50%;
   width: 50px;
   height: 50px;
@@ -108,7 +109,7 @@ const PlayButton = styled.button`
   justify-content: center;
   cursor: pointer;
   &:hover {
-    background-color: ${({ theme }) => theme.primary + 95};
+    background-color: ${({ theme }) => theme.bgMedium} !important;
   }
 `;
 

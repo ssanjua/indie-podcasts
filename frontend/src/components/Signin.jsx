@@ -62,22 +62,23 @@ const OutlinedBox = styled.div`
   ${({ googleButton }) =>
   googleButton &&
   `
-    user-select: none; 
+  user-select: none; 
   gap: 16px;`}
   ${({ button, theme }) =>
   button &&
   `
-    user-select: none; 
+  user-select: none; 
   border: none;
-    background: ${theme.button};
-    color:'${theme.bg}';`}
-    ${({ activeButton, theme }) =>
+  background: ${theme.button};
+  color:'${theme.bg}';`}
+  ${({ activeButton, theme }) =>
   activeButton &&
   `
-    user-select: none; 
+  
+  user-select: none; 
   border: none;
-    background: ${theme.primary};
-    color: white;`}
+  background: ${theme.primary};
+  color: white;`}
   margin: 3px 20px;
   font-size: 14px;
   display: flex;
@@ -85,6 +86,7 @@ const OutlinedBox = styled.div`
   align-items: center;
   font-weight: 500;
   padding: 0px 14px;
+  cursor: pointer;
 `;
 
 

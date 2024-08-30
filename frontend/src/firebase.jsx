@@ -5,12 +5,12 @@ import { initializeApp } from "firebase/app";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBGbtMKpdZVhWxa493Cp8Er9acB6bllHj8",
-  authDomain: "indiepodcasts-2ffac.firebaseapp.com",
-  projectId: "indiepodcasts-2ffac",
-  storageBucket: "indiepodcasts-2ffac.appspot.com",
-  messagingSenderId: "988467058262",
-  appId: "1:988467058262:web:8fe55d2685db958a048df7"
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
 // Initialize Firebase

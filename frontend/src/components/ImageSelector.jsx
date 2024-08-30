@@ -36,12 +36,9 @@ const Img = styled.img`
 `;
 
 const ImageSelector = ({ podcast, setPodcast }) => {
-  const handleOnCompleted = files => {
-    setPodcast((prev) => {
-      return { ...prev, 
-      thumbnail: files[0].base64_file 
-    }})
-  }
+  const handleOnCompleted = (files) => {
+    setPodcast({ ...podcast, thumbnail: files[0].base64_file });
+  };
 
   const CustomisedButton = ({ triggerInput  }) => {
     return (
@@ -58,7 +55,7 @@ const ImageSelector = ({ podcast, setPodcast }) => {
   return (
     <Container>
       {podcast.thumbnail !== "" ? (
-        <Img src={podcast.thumbnail} alt="Thumbnail" />
+        <Img src={podcast.thumbnail} alt={`Thumbnail ${podcast.name}`} />
       ) : (
         <>
           <CloudUploadIcon sx={{ fontSize: "40px" }} />
@@ -81,6 +78,7 @@ export default ImageSelector
 
 ImageSelector.propTypes = {
   podcast: PropTypes.shape({
+    name: PropTypes.string.isRequired,
     thumbnail: PropTypes.string.isRequired
   }).isRequired,
   setPodcast: PropTypes.func.isRequired

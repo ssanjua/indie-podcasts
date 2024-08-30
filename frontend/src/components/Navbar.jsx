@@ -40,7 +40,7 @@ const ButtonDiv = styled.div`
   border: 1px solid ${({ theme }) => theme.text_secondary};
   width: 100%;
   max-width: 70px;
-  border-radius: 4px;
+  border-radius: 8px;
   padding: 8px 10px;
   text-align: center;
   display: flex;
@@ -50,7 +50,7 @@ const ButtonDiv = styled.div`
   gap: 6px;
   box-shadow: 3px 3px 0px 0px ${({ theme }) => theme.primary};
   &:hover{
-    background-color: ${({ theme }) => theme.text_secondary + 10};
+    background-color: ${({ theme }) => theme.bg};
   }
 `;
 

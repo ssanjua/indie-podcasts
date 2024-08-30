@@ -1,5 +1,40 @@
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
+import { CircularProgress } from "@mui/material"
+
+export const DialogPopUp = ({ open, title, onConfirm, onCancel, isLoading }) => {
+
+  if (!open) return null
+
+  return (
+    <Overlay>
+      <Dialog>
+        <DialogTitle>{title}</DialogTitle>
+        <DialogActions>
+          <Button onClick={onConfirm}>
+            {isLoading ? (
+              <CircularProgress color="inherit" size={20} />
+            ) : (
+              "Confirmar"
+            )}
+          </Button>
+          <Button onClick={onCancel}>
+            Cancelar
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </Overlay>
+  )
+}
+
+DialogPopUp.propTypes = {
+  open: PropTypes.bool.isRequired,
+  title: PropTypes.string.isRequired,
+  onConfirm: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool.isRequired
+}
+
 
 const Overlay = styled.div`
   position: fixed;
@@ -58,30 +93,3 @@ const Button = styled.div`
     background-color: ${({ theme }) => theme.primary + 95};
   }
 `
-
-export const DialogPopUp = ({ open, title, onConfirm, onCancel }) => {
-  if (!open) return null
-
-  return (
-    <Overlay>
-      <Dialog>
-        <DialogTitle>{title}</DialogTitle>
-        <DialogActions>
-          <Button onClick={onConfirm}>
-            Confirmar
-          </Button>
-          <Button onClick={onCancel}>
-            Cancelar
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </Overlay>
-  )
-}
-
-DialogPopUp.propTypes = {
-  open: PropTypes.bool.isRequired,
-  title: PropTypes.string.isRequired,
-  onConfirm: PropTypes.func.isRequired,
-  onCancel: PropTypes.func.isRequired,
-}

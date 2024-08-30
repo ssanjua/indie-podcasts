@@ -72,18 +72,28 @@ const AddEpisode = ({ setAddEpisodeOpen }) => {
       "state_changed",
       (snapshot) => {
         const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-        episode.file.uploadProgress = Math.round(progress)
-        setEpisode({ ...episode});
+        setEpisode((prevEpisode) => ({
+          ...prevEpisode,
+          file: {
+            ...prevEpisode.file,
+            uploadProgress: Math.round(progress),
+          },
+        }))
       },
       (error) => {
         console.error("Upload failed:", error)
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          // console.log("File uploaded successfully. Download URL:", downloadURL)
-          setEpisode({ ...episode, file: downloadURL })
-        }).catch(() => {
-          // console.error("Error getting download URL:", error)
+          setEpisode((prevEpisode) => ({
+            ...prevEpisode,
+            file: {
+              ...prevEpisode.file,
+              url: downloadURL,
+            },
+          }))
+        }).catch((error) => {
+          console.error("Failed to get download URL:", error)
         })
       }
     )
@@ -171,22 +181,20 @@ const AddEpisode = ({ setAddEpisodeOpen }) => {
           ) : (
             <>
               <Label>Detalles:</Label>
-              <FileUpload htmlFor="fileField">
-                {episode.file === "" ? (
+                      <FileUpload htmlFor="fileField">
+                {episode.file.url ? (
                   <Uploading>
-                    <UploadRoundedIcon />
-                    Subí tu episodio
+                    <div style={{ color: 'green', display: 'flex', gap: '6px', alignItems: 'center', justifyContent: 'center' }}>
+                      <CloudDoneRounded sx={{ color: 'inherit' }} />
+                      Archivo subido!
+                    </div>
                   </Uploading>
                 ) : (
                   <Uploading>
-                    {episode.file.name === undefined ? (
-                      <div style={{ color: 'green', display: 'flex', gap: '6px', alignItems: 'center', justifyContent: 'center' }}>
-                        <CloudDoneRounded sx={{ color: 'inherit' }} />
-                        Archivo subido!
-                      </div>
-                    ) : (
+                    <UploadRoundedIcon />
+                    Subí tu episodio
+                    {episode.file.uploadProgress !== undefined && (
                       <>
-                        Archivo: {episode.file.name}
                         <LinearProgress
                           sx={{ borderRadius: "10px", height: 3, width: "100%" }}
                           variant="determinate"

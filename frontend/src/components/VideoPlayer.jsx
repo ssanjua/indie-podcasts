@@ -174,6 +174,7 @@ const VideoPlayer = ({ episode, podid, currenttime, index }) => {
             }}
           />
           <Videoplayer controls
+            aria-label={`Reproducir ${episode?.name}`}
             ref={videoref}
             onTimeUpdate={handleTimeUpdate}
             onEnded={() => goToNextPodcast()}

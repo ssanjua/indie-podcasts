@@ -33,7 +33,7 @@ const Card = styled(Link)`
   text-decoration: none;
   background-color: ${({ theme }) => theme.card};
   max-width: 220px;
-  height: 340px;
+  height: auto;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -50,6 +50,10 @@ const Card = styled(Link)`
   }
   &:hover ${PlayIcon}{
     display: flex;
+  }
+    @media (max-width: 550px) {
+    max-width: 200px;
+    height: auto;
   }
 `;
 
@@ -86,8 +90,8 @@ const Description = styled.div`
 
 const CardImage = styled.img`
   object-fit: cover;
-  width: 220px;
-  height: 220px;
+  width: 100%;
+  height: auto;
   border-radius: 6px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
   &:hover{
@@ -186,15 +190,15 @@ export const PodcastCard = ({ podcast, user }) => {
               favouritePodcast()
             }
           }}>
-            <Favorite >
+            <Favorite aria-label={favourite ? "Eliminar de favoritos" : "Agregar a favoritos"}>
               {favourite ?
-                <FavoriteIcon style={{ color: '#E30022"', width: '16px', height: '16px' }}></FavoriteIcon>
+                <FavoriteIcon style={{ color: '#E30022"', width: '16px', height: '16px' }} />
                 :
-                <FavoriteIcon style={{ width: '16px', height: '16px' }}></FavoriteIcon>
+                <FavoriteIcon style={{ width: '16px', height: '16px' }} />
               }
             </Favorite>
           </div>
-          <CardImage src={podcast.thumbnail} />
+          <CardImage alt={`Thumbnail ${podcast.name}`} src={podcast.thumbnail} />
         </Top>
         <CardInformation>
           <MainInfo>
@@ -203,7 +207,7 @@ export const PodcastCard = ({ podcast, user }) => {
             <CreatorInfo>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <Avatar
-                  src={podcast.creator.img} style={{ width: '26px', height: '26px' }}>{podcast.creator.name?.charAt(0).toUpperCase()}</Avatar>
+                  alt={`Imagen de perfil de ${podcast.creator.name}`} src={podcast.creator.img} style={{ width: '26px', height: '26px' }}>{podcast.creator.name?.charAt(0).toUpperCase()}</Avatar>
                 <CreatorName>
                   {podcast.creator.name}
                 </CreatorName>

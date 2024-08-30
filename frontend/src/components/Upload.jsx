@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import { CloseRounded, CloudDoneRounded } from '@mui/icons-material'
 import { CircularProgress, LinearProgress, Modal } from "@mui/material"
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import {
   getStorage,
@@ -19,7 +19,7 @@ import UploadRoundedIcon from '@mui/icons-material/UploadRounded';
 
 
 const Upload = ({ setUploadOpen }) => {
-  const [podcast, setPodcast] = React.useState({
+  const [podcast, setPodcast] = useState({
     name: "",
     desc: "",
     thumbnail: "",
@@ -36,12 +36,12 @@ const Upload = ({ setUploadOpen }) => {
     ],
   })
 
-  const [showEpisode, setShowEpisode] = React.useState(false)
-  const [disabled, setDisabled] = React.useState(true)
-  const [backDisabled, setBackDisabled] = React.useState(false)
+  const [showEpisode, setShowEpisode] = useState(false)
+  const [disabled, setDisabled] = useState(true)
+  const [backDisabled, setBackDisabled] = useState(false)
   // eslint-disable-next-line no-unused-vars
-  const [createDisabled, setCreateDisabled] = React.useState(true)
-  const [loading, setLoading] = React.useState(false)
+  const [createDisabled, setCreateDisabled] = useState(true)
+  const [loading, setLoading] = useState(false)
 
   const dispatch = useDispatch()
 
@@ -99,7 +99,6 @@ const Upload = ({ setUploadOpen }) => {
       },
       () => {
         getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
-          console.log("File uploaded successfully. Download URL:", downloadURL)
           const newEpisodes = podcast.episodes.slice()
           newEpisodes[index].file = downloadURL;
           setPodcast({ ...podcast, episodes: newEpisodes })
@@ -112,9 +111,7 @@ const Upload = ({ setUploadOpen }) => {
 
   const createpodcast = async () => {
     setLoading(true)
-
-    await createPodcast(podcast, token).then((res) => {
-      console.log("Response from backend:", res)
+    await createPodcast(podcast, token).then(() => {
       setDisabled(true)
       setBackDisabled(true)
       setUploadOpen(false)
@@ -127,11 +124,10 @@ const Upload = ({ setUploadOpen }) => {
         })
       )
     }
-    ).catch((err) => {
+    ).catch(() => {
       setDisabled(false)
       setBackDisabled(false)
       setLoading(false)
-      console.log("Error from backend:", err)
       dispatch(
         openSnackbar({
           open: true,
@@ -255,7 +251,7 @@ const Upload = ({ setUploadOpen }) => {
                             <LinearProgress
                               sx={{ borderRadius: "10px", height: 3, width: "100%" }}
                               variant="determinate"
-                              value={podcast.episodes[index].file.uploadProgress}
+                              value={podcast.episodes[index].file.uploadProgress || 0}
                               color={"success"}
                             />
                             {podcast.episodes[index].file.uploadProgress}% subido

@@ -144,8 +144,8 @@ const Search = () => {
         <Categories>
           <Heading>Ver todo</Heading>
           <BrowseAll>
-            {Category.map((category) => (
-              <Link to={`/showpodcasts/${category.name.toLowerCase()}`} key={category.name} style={{ textDecoration: "none" }}>
+            {Category.map((category, index) => (
+              <Link to={`/showpodcasts/${category.name.toLowerCase()}`} key={`${category.name}-${index}`} style={{ textDecoration: "none" }}>
                 <DefaultCard category={category} />
               </Link>
             ))}
@@ -166,7 +166,7 @@ const Search = () => {
                   <TopResult podcast={searchedPodcasts[0]} />
                   <OtherResults>
                     {searchedPodcasts.map((podcast) => (
-                      <MoreResult key={podcast} podcast={podcast} />
+                      <MoreResult key={podcast._id} podcast={podcast} />
                     ))}
                   </OtherResults>
                 </>

@@ -8,7 +8,8 @@ import { IconButton } from '@mui/material'
 import { Link } from 'react-router-dom'
 import { deletePodcast } from '../api'
 import EditRoundedIcon from '@mui/icons-material/EditRounded'
-
+import { useDispatch } from "react-redux"
+import { openSnackbar } from "../redux/snackbarSlice"
 
 const PlayIcon = styled.div`
   padding: 10px;
@@ -185,21 +186,42 @@ const EditContainer = styled.div`
 const IconContainer = styled.div`
   display: flex;
   gap: 6px;
-`
+`;
 
 const PodcastProfileCard = ({ podcast, onDelete }) => {
   const token = localStorage.getItem("indiepodcasttoken")
   const [confirmOpen, setConfirmOpen] = useState(false)
+  const [isConfirmLoading, setIsConfirmLoading] = useState(false)
+
+  const dispatch = useDispatch()
 
   const handleDelete = async () => {
+    setIsConfirmLoading(true)
     try {
       const res = await deletePodcast(podcast._id, token);
       if (res.status === 200) {
         onDelete(podcast._id)
         setConfirmOpen(false)
+        dispatch(
+          openSnackbar({
+            open: true,
+            message: "Podcast eliminado con éxito!",
+            severity: "success",
+          })
+        )
       }
     } catch (err) {
       console.log(err)
+      dispatch(
+        openSnackbar({
+          open: true,
+          message: "Error eliminando el podcast",
+          severity: "error",
+        })
+      )
+    } finally {
+      setIsConfirmLoading(false)
+      setConfirmOpen(false)
     }
   }
 
@@ -254,6 +276,7 @@ const PodcastProfileCard = ({ podcast, onDelete }) => {
         title="¿Estás seguro de eliminar el podcast?"
         onConfirm={handleDelete}
         onCancel={closeConfirmDialog}
+        isLoading={isConfirmLoading}
       />
     </>
   );
@@ -272,14 +295,8 @@ PodcastProfileCard.propTypes = {
     views: PropTypes.number,
     type: PropTypes.string
   }).isRequired,
-  user: PropTypes.shape({
-    favorits: PropTypes.arrayOf(PropTypes.shape({
-      _id: PropTypes.string.isRequired
-    }))
-  }).isRequired,
-  setSignInOpen: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired
 }
 
-export default PodcastProfileCard
+export default PodcastProfileCard;
 
