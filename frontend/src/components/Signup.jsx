@@ -465,5 +465,4 @@ export default SignUp
 
 SignUp.propTypes = {
   setSignUpOpen: PropTypes.func.isRequired,
-  setSignInOpen: PropTypes.func.isRequired,
 }

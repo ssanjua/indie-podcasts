@@ -188,7 +188,7 @@ export const PodcastCard = ({ podcast, user }) => {
           }}>
             <Favorite >
               {favourite ?
-                <FavoriteIcon style={{ color: "#E30022", width: '16px', height: '16px' }}></FavoriteIcon>
+                <FavoriteIcon style={{ color: '#E30022"', width: '16px', height: '16px' }}></FavoriteIcon>
                 :
                 <FavoriteIcon style={{ width: '16px', height: '16px' }}></FavoriteIcon>
               }

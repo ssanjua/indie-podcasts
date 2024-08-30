@@ -110,7 +110,7 @@ const VideoPlayer = ({ episode, podid, currenttime, index }) => {
     if (podid.episodes.length === index + 1) {
       dispatch(
         openSnackbar({
-          message: "This is the last episode",
+          message: "Este es el último episodio",
           severity: "info",
         })
       )

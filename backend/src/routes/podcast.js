@@ -33,7 +33,7 @@ router.delete("/:id", verifyToken, deletePodcast);
 //delte an episode
 router.delete("/episode/:id", verifyToken, deleteEpisode);
 
-//add episode to a 
+//add episode 
 router.post("/episode",verifyToken, addepisodes);
 
 //favorit/unfavorit podcast

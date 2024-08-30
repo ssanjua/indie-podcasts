@@ -113,12 +113,12 @@ const Menu = ({ setMenuOpen, setUploadOpen, setAddEpisodeOpen }) => {
       <Flex>
         <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
           <Logo>
-            <Image src={LogoIcon} />
+            <Image alt="indiepodcasts logo" src={LogoIcon} />
             INDIEPODCASTS
           </Logo>
         </Link>
         <Close>
-          <CloseRounded onClick={() => setMenuOpen(false)} style={{ cursor: "pointer" }} />
+          <CloseRounded aria-label="Cerrar menú" onClick={() => setMenuOpen(false)} style={{ cursor: "pointer" }} />
         </Close>
       </Flex>
       <Link to='/search' style={{ textDecoration: "none", color: "inherit", width: '100%' }}>

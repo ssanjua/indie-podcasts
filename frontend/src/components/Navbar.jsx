@@ -22,8 +22,7 @@ const NavbarDiv = styled.div`
   box-sizing: border-box;
   color: ${({ theme }) => theme.text_primary};
   gap: 30px;
-  background: ${({ theme }) => theme.bg}
-  border-radius: 16px;
+  background: ${({ theme }) => theme.bg};
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
   background-color: ${({ theme }) => theme.bgMedium};
   backdrop-filter: blur(5.7px);
@@ -81,7 +80,6 @@ const Elements = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  // box-shadow: 3px 3px 0px 0px ${({ theme }) => theme.text_secondary};
   gap: 6px;
   &:hover{
     background-color: ${({ theme }) => theme.text_secondary + 10};
@@ -96,13 +94,11 @@ const RightDiv = styled.div`
 `;
 
 const SearchBar = styled.div`
-  // border: 1px solid ${({ theme }) => theme.text_secondary};
   text-align: center;
   color: ${({ theme }) => theme.text_secondary};
   display: flex;
   align-items: center;
   justify-content: center;
-  // box-shadow: 3px 3px 0px 0px ${({ theme }) => theme.prima};
   cursor: pointer;
   padding: 8px;
   border-radius: 4px;
@@ -119,7 +115,7 @@ const Navbar = ({ menuOpen, setMenuOpen, setUploadOpen, darkMode, setDarkMode })
 
   return (
     <NavbarDiv>
-      <IcoButton onClick={() => setMenuOpen(!menuOpen)}>
+      <IcoButton aria-label='Abrir menú' onClick={() => setMenuOpen(!menuOpen)}>
         <MenuIcon />
       </IcoButton>
       {
@@ -131,7 +127,7 @@ const Navbar = ({ menuOpen, setMenuOpen, setUploadOpen, darkMode, setDarkMode })
           <>&nbsp;</>
       }
       <RightDiv>
-        <Link to='/search'>
+        <Link to='/search' aria-label='Buscar'>
           <SearchBar>
             <SearchRoundedIcon  />
           </SearchBar>
@@ -150,13 +146,13 @@ const Navbar = ({ menuOpen, setMenuOpen, setUploadOpen, darkMode, setDarkMode })
         {
           darkMode ?
             <>
-              <Elements onClick={() => setDarkMode(false)}>
+              <Elements onClick={() => setDarkMode(false)} aria-label='Cambiar a modo claro'>
                 <LightModeRoundedIcon />
               </Elements>
             </>
             :
             <>
-              <Elements onClick={() => setDarkMode(true)}>
+              <Elements onClick={() => setDarkMode(true)} aria-label='Cambiar a modo oscuro'>
                 <DarkModeRoundedIcon />
               </Elements>
             </>
@@ -164,7 +160,7 @@ const Navbar = ({ menuOpen, setMenuOpen, setUploadOpen, darkMode, setDarkMode })
         {
           currentUser ? <>
             <Link to='/profile' style={{ textDecoration: 'none' }}>
-              <Avatar src={currentUser.img}>{currentUser.name.charAt(0).toUpperCase()}</Avatar>
+              <Avatar alt={`Avatar de ${currentUser.name}`} src={currentUser.img}>{currentUser.name.charAt(0).toUpperCase()}</Avatar>
             </Link>
           </>
             :

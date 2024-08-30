@@ -167,19 +167,18 @@ const VolumeBar = styled.input.attrs({
 `;
 
 const AudioPlayer = ({ episode, podid, currenttime, index }) => {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [progressWidth, setProgressWidth] = useState(0);
-  const [duration, setDuration] = useState(0);
-  const [volume, setVolume] = useState(1);
-  const audioRef = useRef(null);
-  const dispatch = useDispatch();
+  const [ setProgressWidth ] = useState(0)
+  const [ setDuration ] = useState(0)
+  const [ volume, setVolume ] = useState(1)
+  const audioRef = useRef(null)
+  const dispatch = useDispatch()
 
   const handleTimeUpdate = () => {
-    const duration = audioRef.current.duration;
-    const currentTime = audioRef.current.currentTime;
-    const progress = (currentTime / duration) * 100;
-    setProgressWidth(progress);
-    setDuration(duration);
+    const duration = audioRef.current.duration
+    const currentTime = audioRef.current.currentTime
+    const progress = (currentTime / duration) * 100
+    setProgressWidth(progress)
+    setDuration(duration)
     dispatch(
       setCurrentTime({
         currenttime: currentTime
@@ -199,7 +198,7 @@ const AudioPlayer = ({ episode, podid, currenttime, index }) => {
     if (podid.episodes.length === index + 1) {
       dispatch(
         openSnackbar({
-          message: "This is the last episode",
+          message: "Este es el último episodio",
           severity: "info",
         })
       )
@@ -225,7 +224,7 @@ const AudioPlayer = ({ episode, podid, currenttime, index }) => {
     if (index === 0) {
       dispatch(
         openSnackbar({
-          message: "This is the first episode",
+          message: "Este es el primer episodio",
           severity: "info",
         })
       )
@@ -246,7 +245,7 @@ const AudioPlayer = ({ episode, podid, currenttime, index }) => {
   }
 
   return (
-    <Container>
+    <Container role="region" aria-label="Reproductor de audio">
       <Left>
         <Image src={podid?.thumbnail} />
         <PodData>
@@ -256,7 +255,10 @@ const AudioPlayer = ({ episode, podid, currenttime, index }) => {
       </Left>
       <Player>
         <Controls>
-          <IcoButton onClick={() => goToPreviousPodcast()} >
+          <IcoButton 
+            onClick={() => goToPreviousPodcast()}
+            aria-label="Episodio anterior"
+          >
             <SkipPreviousRounded />
           </IcoButton>
           <Audio
@@ -267,15 +269,16 @@ const AudioPlayer = ({ episode, podid, currenttime, index }) => {
             controls
             onPlay={() => { audioRef.current.currentTime = currenttime }}
             src={episode?.file}
+            aria-label={`Reproducir ${episode?.name}`}
           />
-          <IcoButton onClick={() => goToNextPodcast()} >
+          <IcoButton onClick={() => goToNextPodcast()} aria-label="Siguiente episodio">
             <SkipNextRounded />
           </IcoButton>
         </Controls>
       </Player>
       <Sound>
         <VolumeUp />
-        <VolumeBar value={volume} onChange={handleVolumeChange} />
+        <VolumeBar value={volume} onChange={handleVolumeChange} aria-label="Control de volumen" />
       </Sound>
     </Container>
   )

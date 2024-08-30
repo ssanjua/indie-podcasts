@@ -4,7 +4,6 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined'
 import { DefaultCard } from '../components/DefaultCard.jsx'
 import { Category } from '../utils/data.js'
 import { searchPodcast } from '../api/index.js'
-// import { PodcastCard } from '../components/PodcastCard.jsx'
 import TopResult from '../components/TopResult.jsx'
 import MoreResult from '../components/MoreResult.jsx'
 import { Link } from 'react-router-dom'
@@ -135,7 +134,7 @@ const Search = () => {
       <div style={{ display: 'flex', justifyContent: 'center', width: '100%' }}>
         <Search_whole>
           <SearchOutlinedIcon sx={{ "color": "inherit" }} />
-          <input type='text' placeholder='Buscar podcast'
+          <input aria-label='Buscar podcast' type='text' placeholder='Buscar podcast'
             style={{  "fontSize": "18px", "border": "none", "outline": "none", "width": "100%", "background": "inherit", "color": "inherit" }}
             value={searched}
             onChange={(e) => handleChange(e)} />

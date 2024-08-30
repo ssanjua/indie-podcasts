@@ -58,10 +58,10 @@ const DisplayNo = styled.div`
 
 const DisplayPodcasts = () => {
   const { type } = useParams()
-  const [podcasts, setPodcasts] = useState([])
-  const [string, setString] = useState("")
+  const [ podcasts, setPodcasts ] = useState([])
+  const [ string, setString] = useState("")
   const dispatch = useDispatch()
-  const [Loading, setLoading] = useState(false)
+  const [ loading, setLoading ] = useState(false)
 
   const mostPopular = useCallback(async () => {
     await getMostPopularPodcast()
@@ -120,7 +120,7 @@ const DisplayPodcasts = () => {
     <DisplayMain>
       <Container>
         <Topic>{string}</Topic>
-        {Loading ?
+        {loading ?
           <Loader>
             <CircularProgress />
           </Loader>

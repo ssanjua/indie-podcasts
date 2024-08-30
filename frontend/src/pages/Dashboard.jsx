@@ -2,13 +2,11 @@ import PropTypes from 'prop-types'
 import { useCallback, useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import styled from 'styled-components'
-import { getMostPopularPodcast } from '../api/index'
-import { getPodcastByCategory } from '../api'
+import { getMostPopularPodcast, getPodcastByCategory, getLatestPodcasts, getUsers } from '../api'
 import { PodcastCard } from '../components/PodcastCard.jsx'
-import { getUsers } from '../api/index'
 import { Link } from 'react-router-dom'
 import { CircularProgress } from '@mui/material'
-import { getLatestPodcasts } from '../api'
+
 
 const DashboardMain = styled.div`
   padding: 20px 30px;
@@ -97,7 +95,6 @@ const Dashboard = ({ setSignInOpen }) => {
 
   //user
   const { currentUser } = useSelector(state => state.user)
-
   const token = localStorage.getItem("indiepodcasttoken")
 
   const getUser = useCallback(async () => {
@@ -129,22 +126,27 @@ const Dashboard = ({ setSignInOpen }) => {
 
   const getAllData = useCallback(async () => {
     setLoading(true)
-    if (currentUser) {
-      await getUser()
-    }
-    await getPopularPodcast()
-    await getPodcastsByCategory("variedad", setComedy)
-    await getPodcastsByCategory("noticias", setNews)
-    await getPodcastsByCategory("deportes", setSports)
-    await getPodcastsByCategory("tecnologia", setCrime)
-    setLoading(false);
-  }, [currentUser, getUser, getPopularPodcast, getPodcastsByCategory])
+    try {
+      if (currentUser) {
+        await getUser()
+      }
+    await Promise.all([
+      getPopularPodcast(),
+      getPodcastsByCategory("variedad", setComedy),
+      getPodcastsByCategory("noticias", setNews),
+      getPodcastsByCategory("deportes", setSports),
+      getPodcastsByCategory("tecnologia", setCrime)
+    ])
+  } catch (error) {
+    console.log(error)
+  } finally {
+    setLoading(false)
+  }
+}, [currentUser, getUser, getPopularPodcast, getPodcastsByCategory])
 
   const getNewestPodcast = useCallback(async () => {
-    setLoading(true)
     try {
       const res = await getLatestPodcasts()
-      setLoading(false)
       setNewestPodcast(res.data)
     } catch (error) {
       console.log(error)
@@ -152,8 +154,12 @@ const Dashboard = ({ setSignInOpen }) => {
   }, [])
 
   useEffect(() => {
-    getAllData()
-    getNewestPodcast()
+    const fetchData = async () => {
+      setLoading(true)
+      await Promise.all([getAllData(), getNewestPodcast()])
+      setLoading(false)
+    }
+    fetchData()
   }, [getAllData, getNewestPodcast])
 
   return (
