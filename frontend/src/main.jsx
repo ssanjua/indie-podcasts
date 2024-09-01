@@ -12,7 +12,7 @@ import '@fontsource/press-start-2p';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <GoogleOAuthProvider clientId="640666833805-3qp4n12r3aak3e5mmbpu56alm224htlu.apps.googleusercontent.com">
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
       <Provider store={store}>
         <PersistGate persistor={persistor}>
           <App />
