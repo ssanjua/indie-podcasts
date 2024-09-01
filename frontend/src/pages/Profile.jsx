@@ -22,6 +22,7 @@ const ProfileContainer = styled.div`
   justify-content: center;
   @media (max-width: 768px) {
       align-items: center;
+      justify-content: center;
     }
 `;
 
@@ -41,10 +42,9 @@ const FilterContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  ${({ box, theme }) => box && `
-  // background-color: ${theme.bg};
+  ${({ box }) => box && `
     border-radius: 10px;
-    padding: 20px 30px;
+    padding: 10px 20px;
   `}
 `;
 
@@ -53,22 +53,30 @@ const Topic = styled.div`
   font-size: 24px;
   font-weight: 540;
   display: flex;
+  margin-left: 10px;
   justify-content: space-between;
   align-items: center;
+  @maedia (max-width: 768px){
+    font-size: 18px;
+  }
 `;
 
 const Podcasts = styled.div`
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 14px;
   padding: 18px 6px;
-  @media (max-width: 550px){
-    justify-content: center;
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (max-width: 550px) {
+    grid-template-columns: (2, 1fr);
+    padding: 18px 0px;
+    gap: 6px;
   }
 `;
 
 const ProfileMain = styled.div`
-  padding: 20px 30px;
   padding-bottom: 200px;
   height: 100%;
   overflow-y: scroll;
@@ -79,13 +87,14 @@ const ProfileMain = styled.div`
 
 const UserDetails = styled.div`
   display flex;
+  padding: 20px 30px;
   gap: 20px;
   @media (max-width: 768px) {
-      width: fit-content;
-      display: flex;
-      gap: 20px;
-      justify-content: center;
-      align-items: center;
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 `;
 
@@ -102,7 +111,7 @@ const ButtonContainer = styled.div`
   color: ${({ theme }) => theme.primary};
   border: 1px solid ${({ theme }) => theme.text_secondary};
   width: 100%;
-  border-radius: 22px;
+  border-radius: 16px;
   max-width: 70px;
   padding: 10px 30px;
   text-align: center;
@@ -130,7 +139,6 @@ const Elements = styled.div`
 
 const UploadContainer = styled.div`
   display: flex;
-  // width: 50%;
   gap: 1rem;
   flex-direction: column;
   justify-content: center;
@@ -158,6 +166,18 @@ const Loader = styled.div`
   width: 100%;
 `;
 
+const UserContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  @media (max-width: 768px) {
+    width: fit-content;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+  }
+`;
 
 const Profile = ({ setUploadOpen, setAddEpisodeOpen }) => {
   const [user, setUser] = useState()
@@ -201,52 +221,53 @@ const Profile = ({ setUploadOpen, setAddEpisodeOpen }) => {
         </Loader>
         :
         <>
-
           <UserDetails>
-            <ProfileAvatar>
-              <Avatar sx={{ height: 125, width: 125, fontSize: '24px' }} src={user?.img}>{user?.name.charAt(0).toUpperCase()}</Avatar>
-            </ProfileAvatar>
-            <ProfileContainer>
-              <ProfileName>{name}</ProfileName>
-              <Profile_email>Email: {user?.email}</Profile_email>
-            </ProfileContainer>
+            <UserContainer>
+              <ProfileAvatar>
+                <Avatar sx={{ height: 125, width: 125, fontSize: '24px' }} src={user?.img}>{user?.name.charAt(0).toUpperCase()}</Avatar>
+              </ProfileAvatar>
+              <ProfileContainer>
+                <ProfileName>{name}</ProfileName>
+                <Profile_email>Email: {user?.email}</Profile_email>
+              </ProfileContainer>
+            </UserContainer>
+            <AddContentContainer>
+              <UploadContainer box={true} >
+                <Container>
+                  <ButtonContainer>
+                    {currentUser && (
+                      <Link
+                        onClick={() => setUploadOpen(true)}
+                        style={{ textDecoration: "none", color: "inherit" }}
+                      >
+                        <Elements>
+                          <UploadRoundedIcon />
+                          Nuevo Podcast
+                        </Elements>
+                      </Link>
+                    )}
+                  </ButtonContainer>
+                </Container>
+              </UploadContainer>
+              <UploadContainer box={true} >
+                <Container>
+                  <ButtonContainer>
+                    {currentUser && (
+                      <Link
+                        onClick={() => setAddEpisodeOpen(true)}
+                        style={{ textDecoration: "none", color: "inherit" }}
+                      >
+                        <Elements>
+                          <UploadRoundedIcon />
+                          Nuevo Episodio
+                        </Elements>
+                      </Link>
+                    )}
+                  </ButtonContainer>
+                </Container>
+              </UploadContainer>
+            </AddContentContainer>
           </UserDetails>
-          <AddContentContainer>
-            <UploadContainer box={true} >
-              <Container>
-                <ButtonContainer>
-                  {currentUser && (
-                    <Link
-                      onClick={() => setUploadOpen(true)}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <Elements>
-                        <UploadRoundedIcon />
-                        Nuevo Podcast
-                      </Elements>
-                    </Link>
-                  )}
-                </ButtonContainer>
-              </Container>
-            </UploadContainer>
-            <UploadContainer box={true} >
-              <Container>
-                <ButtonContainer>
-                  {currentUser && (
-                    <Link
-                      onClick={() => setAddEpisodeOpen(true)}
-                      style={{ textDecoration: "none", color: "inherit" }}
-                    >
-                      <Elements>
-                        <UploadRoundedIcon />
-                        Nuevo Episodio
-                      </Elements>
-                    </Link>
-                  )}
-                </ButtonContainer>
-              </Container>
-            </UploadContainer>
-          </AddContentContainer>
           {currentUser && user?.podcasts.length > 0 &&
             <FilterContainer box={true}>
               <Topic>Tus podcasts</Topic>
@@ -261,7 +282,6 @@ const Profile = ({ setUploadOpen, setAddEpisodeOpen }) => {
               </Podcasts>
             </FilterContainer>
           }
-
         </>
       }
     </ProfileMain>

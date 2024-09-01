@@ -29,8 +29,6 @@ const FilterContainer = styled.div`
   border-radius: 10px;
   padding: 20px 30px;
   `}
-  // background-color: ${({ theme }) => theme.bg};
-  border-radius: 10px;
 `;
 
 const Topic = styled.div`
@@ -41,7 +39,7 @@ const Topic = styled.div`
   margin-left: 10px;
   justify-content: space-between;
   align-items: center;
-  @maedia (max-width: 768px){
+  @media (max-width: 768px){
     font-size: 18px;
   }
 `;
@@ -72,10 +70,10 @@ const Podcasts = styled.div`
   }
   @media (max-width: 550px) {
     grid-template-columns: (2, 1fr);
+    padding: 18px 0px;
+    gap: 6px;
   }
 `;
-
-
 
 const Loader = styled.div`
   display: flex;
@@ -95,7 +93,6 @@ const Dashboard = ({ setSignInOpen }) => {
   const [ loading, setLoading ] = useState(false)
   const [ newestPodcast, setNewestPodcast ] = useState([])
 
-  //user
   const { currentUser } = useSelector(state => state.user)
   const token = localStorage.getItem("indiepodcasttoken")
 

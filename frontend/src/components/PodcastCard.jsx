@@ -32,7 +32,7 @@ const Card = styled(Link)`
   position: relative;
   text-decoration: none;
   background-color: ${({ theme }) => theme.card};
-  max-width: 220px;
+  max-width: auto;
   height: auto;
   display: flex;
   flex-direction: column;
@@ -51,9 +51,9 @@ const Card = styled(Link)`
   &:hover ${PlayIcon}{
     display: flex;
   }
-    @media (max-width: 550px) {
-    max-width: 200px;
-    height: auto;
+  @media (max-width: 550px) {
+    padding: 8px;
+    gap: 6px;
   }
 `;
 
@@ -61,7 +61,7 @@ const Top = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 220px;
+  height: auto;
   position: relative;
 `;
 
@@ -102,7 +102,7 @@ const CardImage = styled.img`
 const CardInformation = styled.div`
   display:flex;
   align-items: flex-end;
-  font-weight:450;
+  font-weight: 450;
   padding: 14px 0px 0px 0px;
   width: 100%;
 `;
@@ -150,7 +150,6 @@ const Favorite = styled(IconButton)`
   color: white !important;
   position: absolute !important;
   backdrop-filter: blur(4px);
-  // box-shadow: 0 0 16px 6px #222423 !important;
 `;
 
 export const PodcastCard = ({ podcast, user }) => {

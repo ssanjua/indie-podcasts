@@ -11,13 +11,14 @@ import EditRoundedIcon from '@mui/icons-material/EditRounded'
 import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded'
 import { DialogPopUp } from './DialogPopUp'
 import { deleteEpisode } from '../api'
+import { format } from 'date-fns'
 
 const Card = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   gap: 20px;
   align-items: center;
-  padding: 20px 30px;
+  padding: 10px 20px;
   border-radius: 6px;
   background-color: ${({ theme }) => theme.card};
   &:hover{
@@ -32,13 +33,7 @@ const Card = styled.div`
   }
 `;
 
-const Image = styled.img`
-  width: 100px;
-  height: 100px;
-  border-radius: 6px;
-  background-color: ${({ theme }) => theme.text_secondary};  
-  object-fit: cover;
-`;
+
 
 const Details = styled.div`
   display: flex;
@@ -63,11 +58,6 @@ const Description = styled.div`
   color: ${({ theme }) => theme.text_secondary};
 `;
 
-const ImageContainer = styled.div`
-  position: relative;
-  width: 100px;
-  height: 100px;
-`;
 
 const Delete = styled(IconButton)`
   color:white;
@@ -98,13 +88,12 @@ const EditDeleteContainer = styled.div`
 
 const PlayButton = styled.button`
   background-color: ${({ theme }) => theme.bg};
-
   box-shadow: 3px 3px 0px 0px ${({ theme }) => theme.primary};
   border: 1px solid ${({ theme }) => theme.text_secondary} !important;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
+  border-radius: 22px;
   display: flex;
+  color: ${({ theme }) => theme.text_primary};
+  padding: 6px 20px;
   align-items: center;
   justify-content: center;
   cursor: pointer;
@@ -114,13 +103,25 @@ const PlayButton = styled.button`
 `;
 
 const ButtonsContainer = styled.div`
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+`;
 
+const EpisodeInfo = styled.div`
+  font-size: 12px;
+  font-weight: 600;
+  color: ${({ theme }) => theme.text_primary};
 `;
 
 const Episodecard = ({ episode, podid, type, currentUser, index }) => {
   const dispatch = useDispatch()
   const [confirmOpen, setConfirmOpen] = useState(false)
   const token = localStorage.getItem("indiepodcasttoken")
+
+  const formattedDate = format(new Date(episode.createdAt), 'dd-MM-yyyy');
 
   const addviewtToPodcast = async () => {
     await addView(podid._id).catch((err) => {
@@ -166,9 +167,6 @@ const Episodecard = ({ episode, podid, type, currentUser, index }) => {
   return (
     <>
       <Card>
-        <ImageContainer>
-          <Image src={podid?.thumbnail} />
-        </ImageContainer>
         <Details>
           <Title>{episode.name}
             {currentUser?._id === podid?.creator._id ? (
@@ -182,12 +180,13 @@ const Episodecard = ({ episode, podid, type, currentUser, index }) => {
               </EditDeleteContainer>
             ) : null} </Title>
           <Description>{episode.desc}</Description>
+          
         </Details>
         <ButtonsContainer>
+          <EpisodeInfo>Subido el {formattedDate}</EpisodeInfo>
           <PlayButton onClick={async () => {
             await addviewtToPodcast();
             if (type === "audio") {
-              //open audio player
               dispatch(
                 openPlayer({
                   type: "audio",
@@ -198,7 +197,6 @@ const Episodecard = ({ episode, podid, type, currentUser, index }) => {
                 })
               )
             } else {
-              //open video player
               dispatch(
                 dispatch(
                   openPlayer({
@@ -212,7 +210,7 @@ const Episodecard = ({ episode, podid, type, currentUser, index }) => {
               )
             }
           }}>
-            <PlayArrowRoundedIcon />
+            <PlayArrowRoundedIcon /> Reproducir
           </PlayButton>
         </ButtonsContainer>
       </Card>
@@ -233,6 +231,7 @@ Episodecard.propTypes = {
     _id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     desc: PropTypes.string.isRequired,
+    createdAt: PropTypes.string.isRequired,
   }).isRequired,
   podid: PropTypes.shape({
     _id: PropTypes.string.isRequired,

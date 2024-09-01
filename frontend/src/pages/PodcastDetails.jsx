@@ -189,7 +189,6 @@ const PodcastDetails = () => {
 
   const token = localStorage.getItem("indiepodcasttoken")
   
-  //user
   const { currentUser } = useSelector(state => state.user)
 
   const favoritpodcast = async () => {
@@ -261,7 +260,6 @@ const PodcastDetails = () => {
   }, [currentUser])
 
   React.useEffect(() => {
-    //favorits is an array of objects in which each object has a podcast id match it to the current podcast id
     if (currentUser) {
       getUser();
     }
@@ -303,7 +301,6 @@ const PodcastDetails = () => {
   const closeConfirmDialog = () => {
     setConfirmOpen(false)
   }
-
 
   return (
     <Container>

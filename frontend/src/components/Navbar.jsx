@@ -1,17 +1,19 @@
 import PropTypes from 'prop-types'
 import styled from "styled-components"
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { Avatar } from '@mui/material'
+import { Avatar, IconButton, Menu as MuiMenu, MenuItem } from '@mui/material'
 import PersonIcon from '@mui/icons-material/Person'
 import MenuIcon from "@mui/icons-material/Menu"
-import { IconButton } from "@mui/material"
+import { logout } from "../redux/userSlice"
 import { openSignin } from '../redux/setSigninSlice'
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded'
 import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded'
-import UploadRoundedIcon from '@mui/icons-material/UploadRounded';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded'
-
+import { useNavigate } from 'react-router-dom'
+import { openSnackbar } from '../redux/snackbarSlice'
+import { LogoutOutlined } from '@mui/icons-material'
 
 const NavbarDiv = styled.div`
   display: flex;
@@ -55,8 +57,9 @@ const ButtonDiv = styled.div`
 `;
 
 const Welcome = styled.div`
-  font-size: 18px;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 500;
+  margin-right: 0.5rem;
   color: ${({ theme }) => theme.text_secondary};
   @media (max-width: 768px) {
     font-size: 16px;
@@ -71,7 +74,6 @@ const Elements = styled.div`
   cursor: pointer;
   text-decoration: none;
   color: ${({ theme }) => theme.text_secondary};
-  // border: 1px solid ${({ theme }) => theme.text_secondary};
   border-radius: 4px;
   width: 100%;
   max-width: 70px;
@@ -102,66 +104,128 @@ const SearchBar = styled.div`
   cursor: pointer;
   padding: 8px;
   border-radius: 4px;
-    &:hover{
+  &:hover{
     background-color: ${({ theme }) => theme.text_secondary + 10};
     color: ${({ theme }) => theme.text_primary};
   }
 `;
 
-const Navbar = ({ menuOpen, setMenuOpen, setUploadOpen, darkMode, setDarkMode }) => {
+const InteractiveButtons = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+`;
 
-  const { currentUser } = useSelector(state => state.user);
-  const dispatch = useDispatch();
+const StyledMenu = styled(MuiMenu)`
+  & .MuiPaper-root {
+    padding: 10px;
+    font-size: 12px;
+    background-color: ${({ theme }) => theme.bgMedium}; 
+    color: ${({ theme }) => theme.text_secondary}; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    border-radius: 8px; 
+  }
+`;
+
+const StyledMenuItem = styled(MenuItem)`
+  padding: 10px;
+  gap: 8px;
+  &:hover {
+    background-color: ${({ theme }) => theme.primary};
+    color: ${({ theme }) => theme.text_primary};  
+    border-radius: 4px; 
+`;
+
+const StyledLink = styled(Link)`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: inherit;
+`;
+
+const Navbar = ({ menuOpen, setMenuOpen, darkMode, setDarkMode }) => {
+
+  const { currentUser } = useSelector(state => state.user)
+  const dispatch = useDispatch()
+  const [anchorEl, setAnchorEl] = useState(null)
+
+  const navigate = useNavigate()
+
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget)
+  }
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  }
+
+  const handleLogout = () => {
+    dispatch(logout())
+    dispatch(
+      openSnackbar({
+        message: "Adios, vuelve pronto!",
+        severity: "success",
+      })
+    )
+    navigate('/')
+    handleMenuClose()
+  }
 
   return (
     <NavbarDiv>
       <IcoButton aria-label='Abrir menú' onClick={() => setMenuOpen(!menuOpen)}>
         <MenuIcon />
       </IcoButton>
-      {
-        currentUser ?
-          <Welcome>
-            Hola, {currentUser.name}!
-          </Welcome>
-          :
-          <>&nbsp;</>
-      }
       <RightDiv>
-        <Link to='/search' aria-label='Buscar'>
-          <SearchBar>
-            <SearchRoundedIcon  />
-          </SearchBar>
-        </Link>
-        <Elements onClick={() => {
-          if (currentUser) {
-            setUploadOpen(true)
-          } else {
-            dispatch(
-              openSignin()
-            )
+        <InteractiveButtons>
+          <Link to='/search' aria-label='Buscar'>
+            <SearchBar>
+              <SearchRoundedIcon />
+            </SearchBar>
+          </Link>
+          {
+            darkMode ?
+              <>
+                <Elements onClick={() => setDarkMode(false)} aria-label='Cambiar a modo claro'>
+                  <LightModeRoundedIcon />
+                </Elements>
+              </>
+              :
+              <>
+                <Elements onClick={() => setDarkMode(true)} aria-label='Cambiar a modo oscuro'>
+                  <DarkModeRoundedIcon />
+                </Elements>
+              </>
           }
-        }}>
-          <UploadRoundedIcon />
-        </Elements>
-        {
-          darkMode ?
-            <>
-              <Elements onClick={() => setDarkMode(false)} aria-label='Cambiar a modo claro'>
-                <LightModeRoundedIcon />
-              </Elements>
-            </>
-            :
-            <>
-              <Elements onClick={() => setDarkMode(true)} aria-label='Cambiar a modo oscuro'>
-                <DarkModeRoundedIcon />
-              </Elements>
-            </>
-        }
+        </InteractiveButtons>
         {
           currentUser ? <>
-            <Link to='/profile' style={{ textDecoration: 'none' }}>
-              <Avatar alt={`Avatar de ${currentUser.name}`} src={currentUser.img}>{currentUser.name.charAt(0).toUpperCase()}</Avatar>
+            <Welcome>
+              Hola, {currentUser.name}!
+            </Welcome>
+            <Link>
+              <Avatar alt={`Avatar de ${currentUser.name}`} onClick={handleMenuOpen} src={currentUser.img}>
+                {currentUser.name.charAt(0).toUpperCase()}
+              </Avatar>
             </Link>
+            <StyledMenu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleMenuClose}
+              aria-label='Menu de usuario'
+            >
+              <StyledMenuItem onClick={handleMenuClose}>
+                <StyledLink to='/profile'>
+                  <PersonIcon style={{ fontSize: "16px" }} />
+                  Ir a perfil
+                </StyledLink>
+              </StyledMenuItem>
+              <StyledMenuItem onClick={handleLogout}>
+                <LogoutOutlined style={{ fontSize: "16px" }} />
+                Cerrar sesión
+              </StyledMenuItem>
+            </StyledMenu>
           </>
             :
             <ButtonDiv onClick={() => dispatch(openSignin())}>
@@ -181,5 +245,4 @@ Navbar.propTypes = {
   setMenuOpen: PropTypes.func.isRequired,
   darkMode: PropTypes.bool.isRequired,
   setDarkMode: PropTypes.func.isRequired,
-  setUploadOpen: PropTypes.func.isRequired,
 }

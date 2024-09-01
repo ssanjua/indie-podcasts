@@ -22,14 +22,24 @@ const Topic = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  @media (max-width: 768px){
+    font-size: 18px;
+  }
 `;
 
 const Podcasts = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  height: 100%;
-  gap: 10px;
-  padding: 30px 0px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
+  padding: 18px 6px;
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (max-width: 550px) {
+    grid-template-columns: (2, 1fr);
+    padding: 18px 0px;
+    gap: 6px;
+  }
 `;
 
 const Container = styled.div`

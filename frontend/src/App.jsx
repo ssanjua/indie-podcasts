@@ -108,7 +108,7 @@ function App() {
         <Podcasts>
           {menuOpen && <Menu setMenuOpen={setMenuOpen} setUploadOpen={setUploadOpen} setAddEpisodeOpen={setAddEpisodeOpen} />}
           <Frame>
-            <Navbar menuOpen={menuOpen} setMenuOpen={setMenuOpen} setUploadOpen={setUploadOpen} darkMode={darkMode} setDarkMode={toggleTheme} />
+            <Navbar menuOpen={menuOpen} setMenuOpen={setMenuOpen} darkMode={darkMode} setDarkMode={toggleTheme} />
             <Routes>
               <Route path='/' exact element={<Dashboard setSignInOpen={setSignInOpen} />} />
               <Route path='/search' exact element={<Search />} />

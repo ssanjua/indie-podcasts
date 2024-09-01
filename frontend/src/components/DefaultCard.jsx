@@ -2,8 +2,8 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
 const Card = styled.div`
-  width: 175px;
-  height: 175px;
+  width: 150px;
+  height: 150px;
   border-radius: 0.6rem;
   &:hover{
     cursor: pointer;
@@ -13,7 +13,7 @@ const Card = styled.div`
     filter: brightness(1.3);
   }
   @media (max-width: 768px) {
-    width: 250px;
+    width: 175px;
   }
 `;
 

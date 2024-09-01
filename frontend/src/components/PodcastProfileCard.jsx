@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types'
-import Avatar from '@mui/material/Avatar'
 import styled from 'styled-components'
 import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
 import { useState } from 'react';
@@ -32,8 +31,8 @@ const Card = styled.div`
   position: relative;
   text-decoration: none;
   background-color: ${({ theme }) => theme.card};
-  max-width: 220px;
-  height: 420px;
+  max-width: auto;
+  height: auto;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -50,13 +49,17 @@ const Card = styled.div`
   &:hover ${PlayIcon}{
     display: flex;
   }
+  @media (max-width: 550px) {
+    padding: 8px;
+    gap: 6px;
+  }
 `;
 
 const Top = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 240px;
+  height: auto;
   position: relative;
 `;
 
@@ -71,22 +74,10 @@ const Title = styled.div`
   color: ${({ theme }) => theme.text_primary};
 `;
 
-const Description = styled.div`
-  overflow: hidden;
-  display: -webkit-box;
-  max-width: 100%;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  color: ${({ theme }) => theme.text_secondary};
-  font-size: 12px;
-`
-
 const CardImage = styled.img`
   object-fit: cover;
-  width: 220px;
-  height: 220px;
+  width: 100%;
+  height: auto;
   border-radius: 6px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
   &:hover{
@@ -108,28 +99,6 @@ const MainInfo = styled.div`
   flex-direction:column;
   justify-content: flex-start;
   gap: 4px;
-`;
-
-const CreatorInfo = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  margin-top: 6px;
-`;
-
-const CreatorName = styled.div`
-  font-size:12px;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  color: ${({ theme }) => theme.text_secondary};
-`;
-
-const Views = styled.div`
-  font-size:10px;
-  color: ${({ theme }) => theme.text_secondary};
-  width: max-content;
 `;
 
 const Delete = styled(IconButton)`
@@ -161,10 +130,10 @@ const GoToPodcast = styled(Link)`
   text-decoration: none;
   color: ${({ theme }) => theme.text_primary};
   border: 1px solid ${({ theme }) => theme.text_secondary};
-  width: 100%;
+  width: 30%;
   max-width: 70px;
   border-radius: 16px;
-  padding: 8px 10px;
+  padding: 6px;
   text-align: center;
   display: flex;
   align-items: center;
@@ -235,7 +204,7 @@ const PodcastProfileCard = ({ podcast, onDelete }) => {
 
   return (
     <>
-      <Card >
+      <Card>
         <div>
           <Top>
             <CardImage src={podcast.thumbnail} />
@@ -243,22 +212,11 @@ const PodcastProfileCard = ({ podcast, onDelete }) => {
           <CardInformation>
             <MainInfo>
               <Title>{podcast.name}</Title>
-              <Description>{podcast.desc}</Description>
-              <CreatorInfo>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <Avatar
-                    src={podcast.creator.img} style={{ width: '26px', height: '26px' }}>{podcast.creator.name?.charAt(0).toUpperCase()}</Avatar>
-                  <CreatorName>
-                    {podcast.creator.name}
-                  </CreatorName>
-                </div>
-                <Views>• {podcast.views} vistas</Views>
-              </CreatorInfo>
             </MainInfo>
           </CardInformation>
           <EditContainer>
             <GoToPodcast to={`/podcast/${podcast._id}`}>
-              Ver Podcast
+              Ver
             </GoToPodcast>
             <IconContainer>
               <Delete onClick={openConfirmDialog}>

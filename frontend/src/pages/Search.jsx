@@ -19,9 +19,10 @@ const SearchMain = styled.div`
   overflow-x: hidden;
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
   gap: 20px;
   @media (max-width: 768px) {
-      padding: 20px 9px;
+      padding: 20px 0 100px;      
   }
 `;
 
@@ -34,10 +35,22 @@ const Heading = styled.div`
 `;
 
 const BrowseAll = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  padding: 14px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 14px;
+  padding: 18px 6px;
+  width: 100%;
+  box-sizing: border-box;
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (max-width: 550px) {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 12px 0px;
+    gap: 8px;
+    justify-items: center;
+    align-items: center;
+  }
 `;
 
 const SearchedCards = styled.div`
@@ -47,9 +60,9 @@ const SearchedCards = styled.div`
   gap: 20px;
   padding: 14px;
   @media (max-width: 768px) {
-      flex-direction: column;
-      justify-content: center;
-      padding: 6px;
+    flex-direction: column;
+    justify-content: center;
+    padding: 12px;
   }
 `;
 
@@ -61,10 +74,10 @@ const Search_whole = styled.div`
   margin-top: 20px;
   max-width: 700px;
   display: flex;
-  width: 100%;
+  width: 80%;
   border: 1px solid ${({ theme }) => theme.text_secondary};
-  box-shadow: 3px 3px 0px 0px ${({ theme }) => theme.text_secondary};
-  border-radius: 4px;
+  box-shadow: 3px 3px 0px 0px ${({ theme }) => theme.primary};
+  border-radius: 16px;
   cursor: pointer;
   padding: 18px 16px;
   justify-content: flex-start;

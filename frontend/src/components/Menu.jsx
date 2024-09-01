@@ -14,7 +14,7 @@ import CloseRounded from '@mui/icons-material/CloseRounded'
 import LogoIcon from '/logo.webp'
 import { openSignin } from '../redux/setSigninSlice'
 import { useState } from 'react'
-
+import { openSnackbar } from '../redux/snackbarSlice'
 
 const MenuContainer = styled.div`
   flex: 0.5;
@@ -51,8 +51,6 @@ const Elements = styled.div`
   width: 100%;
   &:hover{
     background-color: ${({ theme }) => theme.text_secondary + 10};
-    // border: 1px solid ${({ theme }) => theme.text_secondary};
-    // box-shadow: 3px 3px 0px 0px ${({ theme }) => theme.text_secondary};
   }
 `;
 
@@ -120,15 +118,21 @@ const Span = styled.span`
   font-weight: bold;
 `;
 
-
 const Menu = ({ setMenuOpen, setUploadOpen, setAddEpisodeOpen }) => {
   const [txtMessage, setTxtMessage] = useState(true)
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { currentUser } = useSelector(state => state.user)
+
   const logoutUser = () => {
     dispatch(logout())
+    dispatch(
+      openSnackbar({
+        message: "Adios, vuelve pronto!",
+        severity: "success",
+      })
+    )
     navigate(`/`)
   }
 

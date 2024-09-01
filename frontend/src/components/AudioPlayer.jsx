@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import PropTypes from 'prop-types'
 import { SkipNextRounded, SkipPreviousRounded, VolumeUp } from '@mui/icons-material'
 import { IconButton } from '@mui/material'
@@ -25,6 +26,11 @@ const Container = styled.div`
     height: 60px;
     gap: 6px;
     padding: 4px 0px;
+  }
+    @media (max-width: 550px) {
+      height: 60px;
+      gap: 2px;
+      padding: 4px 0px;
   }
   z-index: 999;
 `;
@@ -55,6 +61,10 @@ const Image = styled.img`
 const PodData = styled.div`
   display: flex;
   flex-direction: column;
+  color: ${({ theme }) => theme.text_primary };
+   @media (max-width: 550px) {
+    display: none;
+  }
 `;
 
 const Title = styled.span`
@@ -67,13 +77,8 @@ const Title = styled.span`
   overflow: hidden;
   text-overflow: ellipsis;
   @media (max-width: 768px) {
-      font-size: 12px;
+    font-size: 12px;
   }
-`;
-
-const Artist = styled.span`
-  font-size: 12px;
-  margin-top: 3px;
 `;
 
 const Player = styled.div`
@@ -86,7 +91,10 @@ const Player = styled.div`
   align-items: center;
   justify-content: space-between;
   @media (max-width: 768px) {
-      flex: 0.8;
+    flex: 0.8;
+  }
+  @media (max-width: 550px) {
+    flex: 1;
   }
 `;
 
@@ -96,8 +104,8 @@ const Controls = styled.div`
   align-items: center;
   gap: 30px;
   @media (max-width: 768px) {
-      gap: 10px;
-      margin-right: 10px;
+    gap: 10px;
+    margin-right: 10px;
   }
 `;
 
@@ -123,8 +131,12 @@ const IcoButton = styled(IconButton)`
     background-color: ${({ theme }) => theme.bg} !important;
   }
   @media (max-width: 768px) {
-      font-size: 20px !important;
-      padding: 4px !important;
+    font-size: 20px !important;
+    padding: 4px !important;
+  }
+  @media (max-width: 550px) {
+    font-size: 14px !important;
+    padding: 2px !important;
   }
 `;
 
@@ -148,7 +160,7 @@ const VolumeBar = styled.input.attrs({
   min: 0,
   max: 1,
   step: 0.1,
-  })`
+})`
   -webkit-appearance: none;
   width: 100%;
   height: 2px;
@@ -174,9 +186,9 @@ const VolumeBar = styled.input.attrs({
 `;
 
 const AudioPlayer = ({ episode, podid, currenttime, index }) => {
-  const [ setProgressWidth ] = useState(0)
-  const [ setDuration ] = useState(0)
-  const [ volume, setVolume ] = useState(1)
+  const [progressWidth, setProgressWidth] = useState(0)
+  const [duration, setDuration] = useState(0)
+  const [volume, setVolume] = useState(1)
   const audioRef = useRef(null)
   const dispatch = useDispatch()
 
@@ -251,15 +263,14 @@ const AudioPlayer = ({ episode, podid, currenttime, index }) => {
   return (
     <Container role="region" aria-label="Reproductor de audio">
       <Left>
-        <Image src={podid?.thumbnail } />
+        <Image src={podid?.thumbnail} />
         <PodData>
           <Title>{episode?.name}</Title>
-          <Artist>{episode?.creator.name}</Artist>
         </PodData>
       </Left>
       <Player>
         <Controls>
-          <IcoButton 
+          <IcoButton
             onClick={() => goToPreviousPodcast()}
             aria-label="Episodio anterior"
           >
