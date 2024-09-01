@@ -75,36 +75,24 @@ exports.signin = async (req, res, next) => {
 }
 
 exports.googleAuthSignIn = async (req, res, next) => {
-  const { code } = req.body;
-
   try {
-    // Intercambiar el código de autorización por un token de acceso
-    const response = await axios.post(`https://oauth2.googleapis.com/token`, {
-      code,
-      client_id: process.env.GOOGLE_CLIENT_ID,
-      client_secret: process.env.GOOGLE_CLIENT_SECRET,
-      redirect_uri: 'https://indie-podcasts-backend.onrender.com/auth/google/callback', // Asegúrate de que coincida con la URI configurada en Google
-      grant_type: 'authorization_code',
-    });
+    const user = await User.findOne({ email: req.body.email });
 
-    const { id_token, access_token } = response.data;
-
-    // Obtener información del usuario
-    const userInfo = await axios.get(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${access_token}`);
-
-    const { email, sub: googleId } = userInfo.data;
-
-    // Buscar o crear el usuario en la base de datos
-    let user = await User.findOne({ email });
     if (!user) {
-      user = new User({ email, googleId, googleSignIn: true });
-      await user.save();
+      try {
+        const user = new User({ ...req.body, googleSignIn: true });
+        await user.save();
+        const token = jwt.sign({ id: user._id }, process.env.JWT, { expiresIn: "9999 years" });
+        res.status(200).json({ token, user: user });
+      } catch (err) {
+        next(err);
+      }
+    } else if (user.googleSignIn) {
+      const token = jwt.sign({ id: user._id }, process.env.JWT, { expiresIn: "9999 years" });
+      res.status(200).json({ token, user });
+    } else if (user.googleSignIn === false) {
+      return next(createError(201, "User already exists with this email can't do google auth"));
     }
-
-    // Crear un token JWT
-    const token = jwt.sign({ id: user._id }, process.env.JWT, { expiresIn: '9999 years' });
-
-    res.status(200).json({ token, user });
   } catch (err) {
     next(err);
   }
