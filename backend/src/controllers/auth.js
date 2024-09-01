@@ -23,7 +23,7 @@ exports.signup = async (req, res, next) => {
   const { email } = req.body
   // Check we have an email
   if (!email) {
-    return res.status(422).send({ message: "Missing email." });
+    return res.status(422).send({ message: "Falta el correo electrónico." });
   }
   try {
     // Check if the email is in use
@@ -55,14 +55,14 @@ exports.signin = async (req, res, next) => {
   try {
     const user = await User.findOne({ email: req.body.email });
     if (!user) {
-      return next(createError(201, "User not found"));
+      return next(createError(201, "Usuario no encontrado"));
     }
     if (user.googleSignIn) {
-      return next(createError(201, "Entered email is Signed Up with google account. Please SignIn with google."));
+      return next(createError(201, "El correo electrónico ingresado está registrado con una cuenta de Google. Por favor, inicie sesión con Google."));
     }
     const validPassword = await bcrypt.compareSync(req.body.password, user.password);
     if (!validPassword) {
-      return next(createError(201, "Wrong password"));
+      return next(createError(201, "Contraseña incorrecta"));
     }
 
     // create jwt token
@@ -109,50 +109,50 @@ exports.generateOTP = async (req, res) => {
   const { reason } = req.query;
   const verifyOtp = {
     to: email,
-    subject: 'Account Verification OTP',
+    subject: 'Código de Verificación de Cuenta',
     html: `
         <div style="font-family: Poppins, sans-serif; max-width: 600px; margin: 0 auto; background-color: #f9f9f9; padding: 20px; border: 1px solid #ccc; border-radius: 5px;">
-    <h1 style="font-size: 22px; font-weight: 500; color: #854CE6; text-align: center; margin-bottom: 30px;">Verify Your IndiePodcasts Account</h1>
+    <h1 style="font-size: 22px; font-weight: 500; color: #fecd23; text-align: center; margin-bottom: 30px;">Verifica Tu Cuenta de IndiePodcasts</h1>
     <div style="background-color: #FFF; border: 1px solid #e5e5e5; border-radius: 5px; box-shadow: 0px 3px 6px rgba(0,0,0,0.05);">
-        <div style="background-color: #854CE6; border-top-left-radius: 5px; border-top-right-radius: 5px; padding: 20px 0;">
-            <h2 style="font-size: 28px; font-weight: 500; color: #FFF; text-align: center; margin-bottom: 10px;">Verification Code</h2>
+        <div style="background-color: #fecd23; border-top-left-radius: 5px; border-top-right-radius: 5px; padding: 20px 0;">
+            <h2 style="font-size: 28px; font-weight: 500; color: #FFF; text-align: center; margin-bottom: 10px;">Código de Verificación</h2>
             <h1 style="font-size: 32px; font-weight: 500; color: #FFF; text-align: center; margin-bottom: 20px;">${req.app.locals.OTP}</h1>
         </div>
         <div style="padding: 30px;">
-            <p style="font-size: 14px; color: #666; margin-bottom: 20px;">Dear ${name},</p>
-            <p style="font-size: 14px; color: #666; margin-bottom: 20px;">Thank you for creating a IndiePodcasts account. To activate your account, please enter the following verification code:</p>
-            <p style="font-size: 20px; font-weight: 500; color: #666; text-align: center; margin-bottom: 30px; color: #854CE6;">${req.app.locals.OTP}</p>
-            <p style="font-size: 12px; color: #666; margin-bottom: 20px;">Please enter this code in the IndiePodcasts app to activate your account.</p>
-            <p style="font-size: 12px; color: #666; margin-bottom: 20px;">If you did not create a IndiePodcasts account, please disregard this email.</p>
+            <p style="font-size: 14px; color: #666; margin-bottom: 20px;">Estimado/a ${name},</p>
+            <p style="font-size: 14px; color: #666; margin-bottom: 20px;">Gracias por crear una cuenta en IndiePodcasts. Para activar tu cuenta, por favor ingresa el siguiente código de verificación:</p>
+            <p style="font-size: 20px; font-weight: 500; color: #666; text-align: center; margin-bottom: 30px; color: #fecd23;">${req.app.locals.OTP}</p>
+            <p style="font-size: 12px; color: #666; margin-bottom: 20px;">Por favor, ingresa este código en la aplicación IndiePodcasts para activar tu cuenta.</p>
+            <p style="font-size: 12px; color: #666; margin-bottom: 20px;">Si no creaste una cuenta en IndiePodcasts, por favor ignora este correo electrónico.</p>
         </div>
     </div>
     <br>
-    <p style="font-size: 16px; color: #666; margin-bottom: 20px; text-align: center;">Best regards,<br>The IndiePodcasts Team</p>
+    <p style="font-size: 16px; color: #666; margin-bottom: 20px; text-align: center;">Saludos cordiales,<br>El equipo de IndiePodcasts</p>
 </div>
         `
   };
 
   const resetPasswordOtp = {
     to: email,
-    subject: 'IndiePodcasts Reset Password Verification',
+    subject: 'Verificación de Restablecimiento de Contraseña de IndiePodcasts',
     html: `
             <div style="font-family: Poppins, sans-serif; max-width: 600px; margin: 0 auto; background-color: #f9f9f9; padding: 20px; border: 1px solid #ccc; border-radius: 5px;">
-                <h1 style="font-size: 22px; font-weight: 500; color: #854CE6; text-align: center; margin-bottom: 30px;">Reset Your IndiePodcasts Account Password</h1>
+                <h1 style="font-size: 22px; font-weight: 500; color: #fecd23; text-align: center; margin-bottom: 30px;">Restablece Tu Contraseña de IndiePodcasts</h1>
                 <div style="background-color: #FFF; border: 1px solid #e5e5e5; border-radius: 5px; box-shadow: 0px 3px 6px rgba(0,0,0,0.05);">
-                    <div style="background-color: #854CE6; border-top-left-radius: 5px; border-top-right-radius: 5px; padding: 20px 0;">
-                        <h2 style="font-size: 28px; font-weight: 500; color: #FFF; text-align: center; margin-bottom: 10px;">Verification Code</h2>
+                    <div style="background-color: #fecd23; border-top-left-radius: 5px; border-top-right-radius: 5px; padding: 20px 0;">
+                        <h2 style="font-size: 28px; font-weight: 500; color: #FFF; text-align: center; margin-bottom: 10px;">Código de Verificación</h2>
                         <h1 style="font-size: 32px; font-weight: 500; color: #FFF; text-align: center; margin-bottom: 20px;">${req.app.locals.OTP}</h1>
                     </div>
                     <div style="padding: 30px;">
-                        <p style="font-size: 14px; color: #666; margin-bottom: 20px;">Dear ${name},</p>
-                        <p style="font-size: 14px; color: #666; margin-bottom: 20px;">To reset your IndiePodcasts account password, please enter the following verification code:</p>
-                        <p style="font-size: 20px; font-weight: 500; color: #666; text-align: center; margin-bottom: 30px; color: #854CE6;">${req.app.locals.OTP}</p>
-                        <p style="font-size: 12px; color: #666; margin-bottom: 20px;">Please enter this code in the IndiePodcasts app to reset your password.</p>
-                        <p style="font-size: 12px; color: #666; margin-bottom: 20px;">If you did not request a password reset, please disregard this email.</p>
+                        <p style="font-size: 14px; color: #666; margin-bottom: 20px;">Estimado/a ${name},</p>
+                        <p style="font-size: 14px; color: #666; margin-bottom: 20px;">Para restablecer la contraseña de tu cuenta de IndiePodcasts, por favor ingresa el siguiente código de verificación:</p>
+                        <p style="font-size: 20px; font-weight: 500; color: #666; text-align: center; margin-bottom: 30px; color: #fecd23;">${req.app.locals.OTP}</p>
+                        <p style="font-size: 12px; color: #666; margin-bottom: 20px;">Por favor, ingresa este código en la aplicación IndiePodcasts para restablecer tu contraseña.</p>
+                        <p style="font-size: 12px; color: #666; margin-bottom: 20px;">Si no solicitaste un restablecimiento de contraseña, por favor ignora este correo electrónico.</p>
                     </div>
                 </div>
                 <br>
-                <p style="font-size: 16px; color: #666; margin-bottom: 20px; text-align: center;">Best regards,<br>The IndiePodcasts Team</p>
+                <p style="font-size: 16px; color: #666; margin-bottom: 20px; text-align: center;">Saludos cordiales,<br>El equipo de IndiePodcasts</p>
             </div>
         `
   };
@@ -161,7 +161,7 @@ exports.generateOTP = async (req, res) => {
       if (err) {
         next(err)
       } else {
-        return res.status(200).send({ message: "OTP sent" });
+        return res.status(200).send({ message: "OTP enviado" });
       }
     })
   } else {
@@ -169,7 +169,7 @@ exports.generateOTP = async (req, res) => {
       if (err) {
         next(err)
       } else {
-        return res.status(200).send({ message: "OTP sent" });
+        return res.status(200).send({ message: "OTP enviado" });
       }
     })
   }
@@ -180,18 +180,18 @@ exports.verifyOTP = async (req, res, next) => {
   if (parseInt(code) === parseInt(req.app.locals.OTP)) {
     req.app.locals.OTP = null;
     req.app.locals.resetSession = true;
-    res.status(200).send({ message: "OTP verified" });
+    res.status(200).send({ message: "OTP verificado" });
   }
-  return next(createError(201, "Wrong OTP"));
+  return next(createError(201, "Error al verificar el OTP"));
 }
 
 exports.createResetSession = async (req, res, next) => {
   if (req.app.locals.resetSession) {
     req.app.locals.resetSession = false;
-    return res.status(200).send({ message: "Access granted" });
+    return res.status(200).send({ message: "Acceso concedido" });
   }
 
-  return res.status(400).send({ message: "Session expired" });
+  return res.status(400).send({ message: "Sesión expirada" });
 }
 
 exports.findUserByEmail = async (req, res, next) => {
@@ -200,11 +200,11 @@ exports.findUserByEmail = async (req, res, next) => {
     const user = await User.findOne({ email: email });
     if (user) {
       return res.status(200).send({
-        message: "User found"
+        message: "Usuario encontrado"
       });
     } else {
       return res.status(202).send({
-        message: "User not found"
+        message: "Usuario no encontrado"
       });
     }
   } catch (err) {
@@ -213,7 +213,7 @@ exports.findUserByEmail = async (req, res, next) => {
 }
 
 exports.resetPassword = async (req, res, next) => {
-  if (!req.app.locals.resetSession) return res.status(440).send({ message: "Session expired" });
+  if (!req.app.locals.resetSession) return res.status(440).send({ message: "Sesión expirada" });
 
   const { email, password } = req.body;
   try {
@@ -226,7 +226,7 @@ exports.resetPassword = async (req, res, next) => {
 
           req.app.locals.resetSession = false;
           return res.status(200).send({
-            message: "Password reset successful"
+            message: "Restablecimiento de contraseña exitoso"
           });
 
         }).catch(err => {
@@ -234,7 +234,7 @@ exports.resetPassword = async (req, res, next) => {
         });
       } else {
         return res.status(202).send({
-          message: "User not found"
+          message: "Usuario no encontrado"
         });
       }
     });
