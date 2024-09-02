@@ -206,7 +206,7 @@ exports.random = async (req, res, next) => {
 
 exports.mostpopular = async (req, res, next) => {
   try {
-    const podcast = await Podcasts.find().sort({ views: -1 }).limit(8).populate("creator", "name img").populate("episodes");
+    const podcast = await Podcasts.find().sort({ views: -1 }).limit(10).populate("creator", "name img").populate("episodes");
     res.status(200).json(podcast);
   } catch (err) {
     next(err);
@@ -215,7 +215,7 @@ exports.mostpopular = async (req, res, next) => {
 
 exports.latestPodcast = async (req, res, next) => {
   try {
-    const podcast = await Podcasts.find().sort({ createdAt: -1 }).limit(8).populate("creator", "name img").populate("episodes");
+    const podcast = await Podcasts.find().sort({ createdAt: -1 }).limit(10).populate("creator", "name img").populate("episodes");
     res.status(200).json(podcast);
   } catch (err) {
     console.log("error en latest podcasts:", err)

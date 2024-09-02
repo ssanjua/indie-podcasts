@@ -184,7 +184,7 @@ const Dashboard = ({ setSignInOpen }) => {
           <FilterContainer>
             <Topic>Nuevos podcasts</Topic>
             <Podcasts>
-              {newestPodcast.slice(0, 8).map((podcast) => (
+              {newestPodcast.slice(0, 10).map((podcast) => (
                 <PodcastCard podcast={podcast} key={podcast.name} />
               ))}
             </Podcasts>

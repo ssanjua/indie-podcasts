@@ -13,6 +13,9 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  @media (max-width: 768px){
+    padding: 6px 10px;
+  }
 `;
 
 const Topic = styled.div`
@@ -22,15 +25,23 @@ const Topic = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+    @media (max-width: 768px){
+    font-size: 18px;
+  }
 `;
 
 const FavouritesContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 14px;
   padding: 18px 6px;
-  @media (max-width: 550px){
-    justify-content: center;
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (max-width: 550px) {
+    grid-template-columns: (2, 1fr);
+    padding: 18px 0px;
+    gap: 6px;
   }
 `;
 
